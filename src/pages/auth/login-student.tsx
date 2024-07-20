@@ -2,8 +2,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { Button } from "../../components/ui/button"
-import { Input } from "../../components/ui/input"
+import { Button } from "../../components/ui/button.tsx"
+import { Input } from "../../components/ui/input.tsx"
 import {
   Form,
   FormControl,
@@ -15,6 +15,7 @@ import {
 } from "../../components/ui/form.tsx"
 import { useState } from "react";
 import { useToast } from "../../components/ui/use-toast.ts";
+import { Link } from "react-router-dom";
 
 
 
@@ -26,7 +27,7 @@ const formSchema = z.object({
 
 
 
-export default function LoginPage() {
+export default function LoginStudentPage() {
 
   const [optSent, setOTPSent] = useState(false);
   const { toast } = useToast();
@@ -95,9 +96,9 @@ export default function LoginPage() {
             }
 
             {
-              optSent 
-              ? <Button onClick={form.handleSubmit(onSubmitPhoneNo)} type="submit" className="w-full bg-[#007bff] transition-colors hover:bg-[#007bffd9]" >Login</Button>
-              : <Button onClick={form.handleSubmit(onSubmitPhoneNo)} type="submit" className="w-full bg-[#007bff] transition-colors hover:bg-[#007bffd9]" >Generate OPT</Button>
+              optSent
+                ? <Button onClick={form.handleSubmit(onSubmitPhoneNo)} type="submit" className="w-full bg-[#007bff] transition-colors hover:bg-[#007bffd9]" >Login</Button>
+                : <Button onClick={form.handleSubmit(onSubmitPhoneNo)} type="submit" className="w-full bg-[#007bff] transition-colors hover:bg-[#007bffd9]" >Generate OPT</Button>
             }
 
           </form>
@@ -105,6 +106,11 @@ export default function LoginPage() {
 
         <div className="p-5"></div>
 
+      </div>
+
+      <div className="w-full flex flex-col items-center mt-8 text-[#000000b7]">
+        <p>Not a Student?</p>
+        <Link to="/login-other" className="text-sm underline text-blue-500">Click here</Link>
       </div>
     </div>
   );

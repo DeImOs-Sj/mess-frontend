@@ -3,9 +3,10 @@ import {
   Route,
   Routes,
 } from 'react-router-dom';
-import LoginPage from './pages/auth/login';
+import LoginStudentPage from './pages/auth/login-student';
 import Header from './components/Header';
 import { Toaster } from './components/ui/toaster';
+import LoginOtherPage from './pages/auth/login-other';
 
 function App() {
 
@@ -14,9 +15,9 @@ function App() {
       <Header/>
       <Router>
         <Routes>
-          <Route path="/" element={<LoginPage />} />
-          {/* <Route path="/about" element={<About />} />
-          <Route path="*" element={<NotFound />} /> */}
+          <Route path="/" element={<LoginStudentPage />} />
+          <Route path="/login-other" element={<LoginOtherPage/>} />
+          {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
       </Router>
       <Toaster />
