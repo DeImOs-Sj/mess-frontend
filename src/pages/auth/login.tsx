@@ -20,7 +20,7 @@ import { useToast } from "../../components/ui/use-toast.ts";
 
 
 const formSchema = z.object({
-  phoneno: z.string().min(10, { message: "Phone number must be of 10 digits."}).max(10, { message: "Phone number must be of 10 digits."}),
+  phoneno: z.string().min(10, { message: "Phone number must be of 10 digits." }).max(10, { message: "Phone number must be of 10 digits." }),
   otp: z.string().min(4).max(4)
 })
 
@@ -58,7 +58,7 @@ export default function LoginPage() {
       <div className="lg:w-[50%] sm:w-full bg-white p-5 shadow-lg rounded-lg">
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmitPhoneNo)} className="space-y-8">
+          <form className="space-y-8">
             <FormField
               control={form.control}
               name="phoneno"
@@ -75,17 +75,9 @@ export default function LoginPage() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full bg-[#007bff] transition-colors hover:bg-[#007bffd9]" >Generate OPT</Button>
-          </form>
-        </Form>
 
-        <div className="p-5"></div>
-
-        {
-          optSent && (
-
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmitPhoneNo)} className="space-y-8">
+            {
+              optSent && (
                 <FormField
                   control={form.control}
                   name="otp"
@@ -99,11 +91,19 @@ export default function LoginPage() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full bg-[#007bff] transition-colors hover:bg-[#007bffd9]" >Login</Button>
-              </form>
-            </Form>
-          )
-        }
+              )
+            }
+
+            {
+              optSent 
+              ? <Button onClick={form.handleSubmit(onSubmitPhoneNo)} type="submit" className="w-full bg-[#007bff] transition-colors hover:bg-[#007bffd9]" >Login</Button>
+              : <Button onClick={form.handleSubmit(onSubmitPhoneNo)} type="submit" className="w-full bg-[#007bff] transition-colors hover:bg-[#007bffd9]" >Generate OPT</Button>
+            }
+
+          </form>
+        </Form>
+
+        <div className="p-5"></div>
 
       </div>
     </div>
