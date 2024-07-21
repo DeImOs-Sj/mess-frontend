@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 import { z } from "zod";
@@ -29,6 +29,10 @@ import {
 } from "../../components/ui/select"
 
 import { useToast } from "../../components/ui/use-toast.ts";
+import { loginOther } from "../../apis/auth.ts";
+import { useAtom } from "jotai";
+import { loginAtom } from "../../atoms/autAtom.ts";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -36,7 +40,6 @@ import { useToast } from "../../components/ui/use-toast.ts";
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid Email" }),
   password: z.string().min(7).max(18),
-  otp: z.string().min(4).max(4),
   role: z.string().min(1, { message: "Role is required" }), // Add validation for the new field
 })
 
@@ -44,31 +47,44 @@ const formSchema = z.object({
 
 export default function LoginOtherPage() {
 
-  const [optSent, setOTPSent] = useState(false);
   const { toast } = useToast();
+  const [isLoggedIn, setIsLoggedin] = useAtom(loginAtom);
 
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
       password: "",
-      otp: "0000",
       role: "vendor"
     },
   })
 
-  function onSubmitPhoneNo(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
-    setOTPSent(true);
-    toast({
-      title: "OTP Sent",
-      description: "Check your messages, otp sent successfully",
-    })
+    const reslt = await loginOther(values.email,values.password);
+
+    if (reslt === true) {
+      toast({
+        title: "Welcome",
+        description: "You are successfully logged in",
+      })
+      setIsLoggedin(true);
+    }
+
   }
 
+
+  useEffect(()=>{
+    
+    if (isLoggedIn) {
+      navigate("/");
+    }
+
+  },[isLoggedIn])
 
   return (
     <div className="w-full flex flex-col justify-center items-center p-10">
@@ -138,7 +154,7 @@ export default function LoginOtherPage() {
 
 
 
-            <Button onClick={form.handleSubmit(onSubmitPhoneNo)} type="submit" className="w-full bg-[#007bff] transition-colors hover:bg-[#007bffd9]" >Login</Button>
+            <Button onClick={form.handleSubmit(onSubmit)} className="w-full bg-[#007bff] transition-colors hover:bg-[#007bffd9]" >Login</Button>
 
 
           </form>
@@ -148,10 +164,6 @@ export default function LoginOtherPage() {
 
       </div>
 
-      <div className="w-full flex flex-col items-center mt-8 text-[#000000b7]">
-        <p>Not a Student?</p>
-        <a href="" className="text-sm underline text-blue-500">Click here</a>
-      </div>
     </div>
   );
 }

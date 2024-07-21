@@ -13,9 +13,11 @@ import {
   FormLabel,
   FormMessage,
 } from "../../components/ui/form.tsx"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "../../components/ui/use-toast.ts";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAtom } from "jotai";
+import { loginAtom } from "../../atoms/autAtom.ts";
 
 
 
@@ -30,8 +32,11 @@ const formSchema = z.object({
 export default function LoginStudentPage() {
 
   const [optSent, setOTPSent] = useState(false);
+  const [isLoggedIn, ] = useAtom(loginAtom);
   const { toast } = useToast();
 
+
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,6 +56,15 @@ export default function LoginStudentPage() {
       description: "Check your messages, otp sent successfully",
     })
   }
+
+
+  useEffect(()=>{
+    
+    if (isLoggedIn) {
+      navigate("/");
+    }
+
+  },[isLoggedIn])
 
 
   return (
