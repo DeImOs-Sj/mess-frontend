@@ -1,8 +1,6 @@
 import {
-  BrowserRouter as Router,
   Route,
   Routes,
-  useNavigate,
 } from 'react-router-dom';
 import LoginStudentPage from './pages/auth/login-student';
 import Header from './components/Header';
@@ -12,13 +10,14 @@ import { useAtom } from 'jotai';
 import { loginAtom, userDetailsAtom } from './atoms/autAtom';
 import { useEffect } from 'react';
 import { getMe } from './apis/auth';
-import Home from './pages/home';
+import ManagementHeader from './components/ManagementHeader';
+import ManagementHome from './pages/management/home';
 
 function App() {
 
 
   const [isLoggedIn, setIsLoggedin] = useAtom(loginAtom);
-  const [, setUser] = useAtom(userDetailsAtom);
+  const [userDetail, setUser] = useAtom(userDetailsAtom);
 
   const checkLoggedin = async () => {
     let accessTkn = localStorage.getItem("access")
@@ -39,7 +38,7 @@ function App() {
 
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     checkLoggedin();
   }, [])
 
@@ -48,16 +47,18 @@ function App() {
     <div className='min-h-screen bg-[#f4f4f4]'>
 
       {
-        !isLoggedIn && <Header/>
+        !isLoggedIn && <Header />
       }
-      <Router>
+
+      {
+        userDetail?.role === "SUPERVISOR" &&  <ManagementHeader />
+      }
         <Routes>
           <Route path="/login-student" element={<LoginStudentPage />} />
-          <Route path="/login-other" element={<LoginOtherPage/>} />
-          <Route path="/" element={<Home/>} />
+          <Route path="/login-other" element={<LoginOtherPage />} />
+          <Route path="/" element={<ManagementHome />} />
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
-      </Router>
       <Toaster />
     </div>
   )
