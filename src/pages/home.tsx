@@ -2,6 +2,7 @@ import { useAtom } from "jotai";
 import { loginAtom } from "../atoms/autAtom";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import ManagementHome from "./management/home";
 
 
 export default function Home() {
@@ -19,8 +20,6 @@ export default function Home() {
 
     }, [])
 
-    return (
-        <h1>Home</h1>
-    )
+    return <ManagementHome/>
 
 }

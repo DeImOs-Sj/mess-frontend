@@ -17,7 +17,7 @@ import Home from './pages/home';
 function App() {
 
 
-  const [, setIsLoggedin] = useAtom(loginAtom);
+  const [isLoggedIn, setIsLoggedin] = useAtom(loginAtom);
   const [, setUser] = useAtom(userDetailsAtom);
 
   const checkLoggedin = async () => {
@@ -46,7 +46,10 @@ function App() {
 
   return (
     <div className='min-h-screen bg-[#f4f4f4]'>
-      <Header/>
+
+      {
+        !isLoggedIn && <Header/>
+      }
       <Router>
         <Routes>
           <Route path="/login-student" element={<LoginStudentPage />} />
