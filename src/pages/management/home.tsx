@@ -3,11 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import { useAtom } from "jotai";
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../components/ui/card";
-import { Input } from "../../components/ui/input";
-import { Button } from "../../components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card";
 import { loginAtom } from "../../atoms/autAtom";
-import { Label } from "../../components/ui/label";
 
 
 const cards_info = [
@@ -35,7 +32,7 @@ export default function ManagementHome() {
     useEffect(() => {
 
         if (!isLoggedIn) {
-            navigate("/login-other");
+            navigate("/login-student");
         }
 
     }, [isLoggedIn])

@@ -69,7 +69,7 @@ export default function LoginStudentPage() {
 
   return (
     <div className="w-full flex flex-col justify-center items-center p-10">
-      <p className="text-blue-500 text-2xl font-bold mb-10">Student Login</p>
+      <p className="text-[#6b46c1] text-2xl font-bold mb-10">Student Login</p>
       <div className="lg:w-[50%] sm:w-full bg-white p-5 shadow-lg rounded-lg">
 
         <Form {...form}>
@@ -111,8 +111,8 @@ export default function LoginStudentPage() {
 
             {
               optSent
-                ? <Button onClick={form.handleSubmit(onSubmitPhoneNo)} type="submit" className="w-full bg-[#007bff] transition-colors hover:bg-[#007bffd9]" >Login</Button>
-                : <Button onClick={form.handleSubmit(onSubmitPhoneNo)} type="submit" className="w-full bg-[#007bff] transition-colors hover:bg-[#007bffd9]" >Generate OPT</Button>
+                ? <Button onClick={form.handleSubmit(onSubmitPhoneNo)} type="submit" className="w-full bg-[#6b46c1] transition-colors hover:bg-[#007bffd9]" >Login</Button>
+                : <Button onClick={form.handleSubmit(onSubmitPhoneNo)} type="submit" className="w-full bg-[#6b46c1] transition-colors hover:bg-[#007bffd9]" >Generate OPT</Button>
             }
 
           </form>
