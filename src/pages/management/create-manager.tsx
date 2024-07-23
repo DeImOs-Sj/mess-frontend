@@ -80,6 +80,16 @@ export default function CreateManagerScreen() {
     }
 
 
+    useEffect(() => {
+
+        if (!isLoggedIn) {
+            navigate("/login-student");
+        }
+
+    }, [isLoggedIn])
+
+
+
 
     return (
         <div className="w-full h-screen flex flex-col justify-center items-center p-3">
@@ -137,7 +147,7 @@ export default function CreateManagerScreen() {
                                                 <SelectItem value="RESIDENT_OFFICER">Resident Officer / Estate Officer</SelectItem>
                                                 <SelectItem value="CAMPUS_DIRECTOR">Campus Director</SelectItem>
                                                 <SelectItem value="COMMITTEE">Committee</SelectItem>
-
+                                                <SelectItem value="STUDENT">Student</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </FormControl>

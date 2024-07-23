@@ -15,6 +15,7 @@ import ManagementHome from './pages/management/home';
 import CreateManagerScreen from './pages/management/create-manager';
 import PendingQueries from './pages/management/pending-queries';
 import ResolvedQueries from './pages/management/resolved-queries';
+import ComplaintScreen from './pages/student/complaint';
 
 function App() {
 
@@ -66,6 +67,7 @@ function App() {
         <Route path="/create-manager" element={<CreateManagerScreen />} />
         <Route path="/pending-queries" element={<PendingQueries />} />
         <Route path="/resolved-queries" element={<ResolvedQueries />} />
+        <Route path="/complaint" element={<ComplaintScreen />} />
 
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>

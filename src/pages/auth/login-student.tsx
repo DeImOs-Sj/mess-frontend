@@ -18,18 +18,21 @@ import { useToast } from "../../components/ui/use-toast.ts";
 import { Link, useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
 import { loginAtom } from "../../atoms/autAtom.ts";
+import { loginStudent } from "../../apis/auth.ts";
 
 const formSchema = z.object({
-  phoneno: z
-    .string()
-    .min(10, { message: "Phone number must be of 10 digits." })
-    .max(10, { message: "Phone number must be of 10 digits." }),
+  // phoneno: z
+  //   .string()
+  //   .min(10, { message: "Phone number must be of 10 digits." })
+  //   .max(10, { message: "Phone number must be of 10 digits." }),
+  email: z.string().email(),
   otp: z.string().min(4).max(4),
 });
 
 export default function LoginStudentPage() {
   const [optSent, setOTPSent] = useState(false);
-  const [isLoggedIn] = useAtom(loginAtom);
+  const [isLoggedIn, setIsLoggedin] = useAtom(loginAtom);
+  
   const { toast } = useToast();
 
   const navigate = useNavigate();
@@ -37,7 +40,7 @@ export default function LoginStudentPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      phoneno: "",
+      email: "",
       otp: "0000",
     },
   });
@@ -45,7 +48,7 @@ export default function LoginStudentPage() {
   function onSubmitPhoneNo(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+
     setOTPSent(true);
     toast({
       title: "OTP Sent",
@@ -53,9 +56,26 @@ export default function LoginStudentPage() {
     });
   }
 
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+
+    const reslt = await loginStudent(values.email,"password1");
+
+    if (reslt === true) {
+      toast({
+        title: "Welcome",
+        description: "You are successfully logged in",
+      })
+      setIsLoggedin(true);
+    }
+
+  }
+
   useEffect(() => {
     if (isLoggedIn) {
-      navigate("/");
+      navigate("/complaint");
     }
   }, [isLoggedIn]);
 
@@ -67,15 +87,15 @@ export default function LoginStudentPage() {
           <form className="space-y-8">
             <FormField
               control={form.control}
-              name="phoneno"
+              name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="8473948374" {...field} />
+                    <Input type="email" placeholder="rakesh@gmail.com" {...field} />
                   </FormControl>
                   <FormDescription>
-                    Enter Mess registerd mobile number
+                    Enter Mess registerd email id
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -100,7 +120,7 @@ export default function LoginStudentPage() {
 
             {optSent ? (
               <Button
-                onClick={form.handleSubmit(onSubmitPhoneNo)}
+                onClick={form.handleSubmit(onSubmit)}
                 type="submit"
                 className="w-full bg-[#6b46c1] transition-colors hover:bg-[#007bffd9]"
               >

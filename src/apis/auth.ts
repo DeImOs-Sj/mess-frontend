@@ -40,6 +40,43 @@ export async function loginOther(email: string, password: string): Promise<boole
 }
 
 
+
+export async function loginStudent(email: string, password: string): Promise<boolean> {
+
+    try {
+
+        const resp = await fetch(
+            BACKEND_URL + "/auth/login",
+            {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email,
+                    password
+                }),
+            }
+        )
+
+        if (resp.status !== 200) {
+            return false
+        }
+
+        const jsn = await resp.json()
+
+        localStorage.setItem("access", jsn.tokens.access.token)
+
+        return true
+
+
+    } catch (err: any) {
+        console.log(err)
+        return false
+    }
+
+}
+
 export async function getMe(token: string): Promise<User | null> {
 
     try {
@@ -77,7 +114,7 @@ export async function getMe(token: string): Promise<User | null> {
 
 
 export async function createUser (token: string, name: string, email: string, password: string, role: string): Promise<boolean> {
-    console.log(token)
+
     try {
 
         const resp = await fetch(

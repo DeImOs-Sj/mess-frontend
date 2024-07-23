@@ -26,12 +26,57 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Calendar } from "./ui/calendar";
 
+
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+
+const formSchema = z.object({
+  email: z.string().email({ message: "Invalid Email" }),
+  campus: z.string(),
+  mess: z.string(),
+  date_of_happening: z.date(),
+  student_name: z.string(),
+  student_phno: z.string(),
+  college_name: z.string(),
+  is_clean: z.string().default("false"),
+  is_pest_controlled: z.string().default("false"),
+  food_handler_protocols: z.string().default("false"),
+  complaint_desc: z.string(),
+  suggestion_improvement: z.string(),
+  complaint_category: z.string(),
+  meal_time: z.string().default("LUNCH"),
+  image_photos: z.array(z.string()),
+})
+
+
+
 export function StudentForm() {
   const [date, setDate] = React.useState<Date | undefined>(undefined);
-  const form = useForm();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      campus: "Ambegaon",
+      mess: "Sinhgad Rohini Mess",
+      date_of_happening: new Date(),
+      student_name: "",
+      student_phno: "",
+      college_name: "",
+      is_clean: "false",
+      is_pest_controlled: "false",
+      food_handler_protocols: "false",
+      complaint_desc: "",
+      suggestion_improvement: "",
+      complaint_category: "",
+      meal_time: "BREAKFAST",
+      image_photos: [],
+    },
+  })
 
   return (
-    <div className="my-12 grid gap-6 px-2">
+    <div className="w-full grid gap-6 bg-white p-10 rounded-lg shadow-lg">
       <Form {...form}>
         <form>
           <fieldset className="grid grid-cols-2 gap-4">
@@ -61,11 +106,11 @@ export function StudentForm() {
                       </SelectTrigger>
                       <SelectContent className="w-full">
                         <SelectGroup>
-                          <SelectItem value="option1">Option 1</SelectItem>
-                          <SelectItem value="option2">Option 2</SelectItem>
-                          <SelectItem value="option3">Option 3</SelectItem>
-                          <SelectItem value="option4">Option 4</SelectItem>
-                          <SelectItem value="option5">Option 5</SelectItem>
+                          <SelectItem value="Ambegaon">Ambegaon</SelectItem>
+                          <SelectItem value="RMD">RMD</SelectItem>
+                          <SelectItem value="Kolhapur">Kolhapur</SelectItem>
+                          <SelectItem value="Lonavala">Lonavala</SelectItem>
+                          <SelectItem value="Nahre">Nahre</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -85,13 +130,13 @@ export function StudentForm() {
                       <SelectTrigger id="mess-dropdown" className="w-full">
                         <SelectValue placeholder="Select an option" />
                       </SelectTrigger>
-                      <SelectContent className="w-full">
+                      <SelectContent className="w-full h-[300px] overflow-y-scroll">
                         <SelectGroup>
-                          <SelectItem value="option1">Option 1</SelectItem>
-                          <SelectItem value="option2">Option 2</SelectItem>
-                          <SelectItem value="option3">Option 3</SelectItem>
-                          <SelectItem value="option4">Option 4</SelectItem>
-                          <SelectItem value="option5">Option 5</SelectItem>
+                          <SelectItem value="Sinhgad Rohini Mess">Sinhgad Rohini Mess</SelectItem>
+                          <SelectItem value="Sinhgad Rakesh Mess">Sinhgad Rakesh Mess</SelectItem>
+                          <SelectItem value="Sinhgad Ram Mess">Sinhgad Ram Mess</SelectItem>
+                          <SelectItem value="Sinhgad Sham Mess">Sinhgad Sham Mess</SelectItem>
+                          <SelectItem value="Sinhgad Generic Mess">Sinhgad Generic Mess</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -102,7 +147,7 @@ export function StudentForm() {
             />
             <Controller
               control={form.control}
-              name="date"
+              name="date_of_happening"
               render={({ field }) => (
                 <FormItem className="flex">
                   <FormControl>
@@ -143,7 +188,7 @@ export function StudentForm() {
             />
             <FormField
               control={form.control}
-              name="name"
+              name="student_name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name of Student</FormLabel>
@@ -156,7 +201,7 @@ export function StudentForm() {
             />
             <FormField
               control={form.control}
-              name="phone"
+              name="student_phno"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Phone Number</FormLabel>
@@ -169,12 +214,12 @@ export function StudentForm() {
             />
             <FormField
               control={form.control}
-              name="postal_code"
+              name="college_name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>College Name and Class</FormLabel>
                   <FormControl>
-                    <Input placeholder="410401" {...field} />
+                    <Input placeholder="NBN Sinhgad" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -182,7 +227,7 @@ export function StudentForm() {
             />
             <Controller
               control={form.control}
-              name="mess"
+              name="is_clean"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Hygiene Environment in Dining Hall </FormLabel>
@@ -193,8 +238,8 @@ export function StudentForm() {
                       </SelectTrigger>
                       <SelectContent className="w-full">
                         <SelectGroup>
-                          <SelectItem value="option1">Yes</SelectItem>
-                          <SelectItem value="option2">No</SelectItem>
+                          <SelectItem value="true">Yes</SelectItem>
+                          <SelectItem value="false">No</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -205,7 +250,7 @@ export function StudentForm() {
             />
             <Controller
               control={form.control}
-              name="mess"
+              name="is_pest_controlled"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Pest Control Done in Dining Hall</FormLabel>
@@ -216,8 +261,8 @@ export function StudentForm() {
                       </SelectTrigger>
                       <SelectContent className="w-full">
                         <SelectGroup>
-                          <SelectItem value="option1">Yes</SelectItem>
-                          <SelectItem value="option2">No</SelectItem>
+                          <SelectItem value="true">Yes</SelectItem>
+                          <SelectItem value="false">No</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -228,7 +273,7 @@ export function StudentForm() {
             />
             <Controller
               control={form.control}
-              name="mess"
+              name="food_handler_protocols"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Food Handlers Following Protocols</FormLabel>
@@ -239,8 +284,8 @@ export function StudentForm() {
                       </SelectTrigger>
                       <SelectContent className="w-full">
                         <SelectGroup>
-                          <SelectItem value="option1">Yes</SelectItem>
-                          <SelectItem value="option2">No</SelectItem>
+                          <SelectItem value="true">Yes</SelectItem>
+                          <SelectItem value="false">No</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -251,7 +296,7 @@ export function StudentForm() {
             />
             <FormField
               control={form.control}
-              name="foodComplaints"
+              name="complaint_desc"
               render={({ field }) => (
                 <FormItem className="col-span-2">
                   <FormLabel>Food Related Complaints</FormLabel>
@@ -264,7 +309,7 @@ export function StudentForm() {
             />
             <FormField
               control={form.control}
-              name="foodSuggestions"
+              name="suggestion_improvement"
               render={({ field }) => (
                 <FormItem className="col-span-2">
                   <FormLabel>Suggestion for Improvements</FormLabel>
@@ -280,7 +325,7 @@ export function StudentForm() {
             />
             <Controller
               control={form.control}
-              name="mess"
+              name="complaint_category"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Category of Complaints</FormLabel>
@@ -291,11 +336,8 @@ export function StudentForm() {
                       </SelectTrigger>
                       <SelectContent className="w-full">
                         <SelectGroup>
-                          <SelectItem value="option1">Option 1</SelectItem>
-                          <SelectItem value="option2">Option 2</SelectItem>
-                          <SelectItem value="option3">Option 3</SelectItem>
-                          <SelectItem value="option4">Option 4</SelectItem>
-                          <SelectItem value="option5">Option 5</SelectItem>
+                          <SelectItem value="FOOD_QUALITY">Food Quality</SelectItem>
+                          <SelectItem value="CLEANLINESS">Cleanliness</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -307,7 +349,7 @@ export function StudentForm() {
 
             <Controller
               control={form.control}
-              name="mess"
+              name="meal_time"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Meal Time</FormLabel>
@@ -318,11 +360,9 @@ export function StudentForm() {
                       </SelectTrigger>
                       <SelectContent className="w-full">
                         <SelectGroup>
-                          <SelectItem value="option1">Option 1</SelectItem>
-                          <SelectItem value="option2">Option 2</SelectItem>
-                          <SelectItem value="option3">Option 3</SelectItem>
-                          <SelectItem value="option4">Option 4</SelectItem>
-                          <SelectItem value="option5">Option 5</SelectItem>
+                          <SelectItem value="BREAKFAST">Breakfast</SelectItem>
+                          <SelectItem value="LUNCH">Lunch</SelectItem>
+                          <SelectItem value="DINNER">Dinner</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>

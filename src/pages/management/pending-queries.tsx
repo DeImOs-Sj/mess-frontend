@@ -32,7 +32,10 @@ import {
     TableHeader,
     TableRow,
 } from "../../components/ui/table"
-import React from "react"
+import React, { useEffect } from "react"
+import { useAtom } from "jotai"
+import { loginAtom } from "../../atoms/autAtom"
+import { useNavigate } from "react-router-dom"
 
 
 
@@ -198,6 +201,20 @@ export default function PendingQueries() {
             rowSelection,
         },
     })
+
+
+    const [isLoggedIn,] = useAtom(loginAtom);
+    const navigate = useNavigate();
+
+
+
+    useEffect(() => {
+
+        if (!isLoggedIn) {
+            navigate("/login-student");
+        }
+
+    }, [isLoggedIn])
 
 
 
