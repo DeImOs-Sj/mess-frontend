@@ -64,7 +64,6 @@ export default function CreateManagerScreen() {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        console.log(values)
         const authToken = localStorage.getItem("access");
         const reslt = await createUser(authToken!, values.name,values.email,"password1", values.role);
 

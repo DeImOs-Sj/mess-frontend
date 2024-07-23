@@ -29,6 +29,11 @@ import { Calendar } from "./ui/calendar";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { createComplaint } from "../apis/complaint";
+import { useToast } from "./ui/use-toast";
+import { useAtom } from "jotai";
+import { loginAtom } from "../atoms/autAtom";
+import { Complaint } from "../interfaces";
 
 
 const formSchema = z.object({
@@ -39,20 +44,22 @@ const formSchema = z.object({
   student_name: z.string(),
   student_phno: z.string(),
   college_name: z.string(),
-  is_clean: z.string().default("false"),
-  is_pest_controlled: z.string().default("false"),
-  food_handler_protocols: z.string().default("false"),
+  is_clean: z.string(),
+  is_pest_controlled: z.string(),
+  food_handler_protocols: z.string(),
   complaint_desc: z.string(),
   suggestion_improvement: z.string(),
   complaint_category: z.string(),
   meal_time: z.string().default("LUNCH"),
-  image_photos: z.array(z.string()),
 })
 
 
 
 export function StudentForm() {
   const [date, setDate] = React.useState<Date | undefined>(undefined);
+
+  const { toast } = useToast();
+  const [isLoggedIn, setIsLoggedin] = useAtom(loginAtom);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -71,9 +78,44 @@ export function StudentForm() {
       suggestion_improvement: "",
       complaint_category: "",
       meal_time: "BREAKFAST",
-      image_photos: [],
     },
   })
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log("====")
+    const complaint: Complaint = {
+      email: values.email,
+      campus: values.campus,
+      mess: values.mess,
+      date_of_happening: values.date_of_happening,
+      student_name: values.student_name,
+      student_phno: values.student_phno,
+      college_name: values.college_name,
+      is_clean: values.is_clean,
+      is_pest_controlled: values.is_pest_controlled,
+      food_handler_protocols: values.food_handler_protocols,
+      complaint_desc: values.complaint_desc,
+      suggestion_improvement: values.suggestion_improvement,
+      complaint_category: values.complaint_category,
+      meal_time: values.meal_time,
+      image_photos: [],
+    }
+
+    const authToken = localStorage.getItem("access");
+    const reslt = await createComplaint(authToken!,complaint);
+
+    if (reslt === true) {
+      toast({
+        title: "Raise",
+        description: "Complaint successfully raised",
+      })
+
+      form.reset();
+    }
+
+  }
 
   return (
     <div className="w-full grid gap-6 bg-white p-10 rounded-lg shadow-lg">
@@ -175,6 +217,7 @@ export function StudentForm() {
                           selected={date}
                           onSelect={(selectedDate) => {
                             setDate(selectedDate);
+                            form.setValue("date_of_happening",selectedDate!);
                             field.onChange(selectedDate);
                           }}
                           initialFocus
@@ -233,7 +276,7 @@ export function StudentForm() {
                   <FormLabel>Hygiene Environment in Dining Hall </FormLabel>
                   <FormControl>
                     <Select {...field} onValueChange={field.onChange}>
-                      <SelectTrigger id="mess-dropdown" className="w-full">
+                      <SelectTrigger id="isclean-dropdown" className="w-full">
                         <SelectValue placeholder="Select an answer" />
                       </SelectTrigger>
                       <SelectContent className="w-full">
@@ -256,7 +299,7 @@ export function StudentForm() {
                   <FormLabel>Pest Control Done in Dining Hall</FormLabel>
                   <FormControl>
                     <Select {...field} onValueChange={field.onChange}>
-                      <SelectTrigger id="mess-dropdown" className="w-full">
+                      <SelectTrigger id="is-pest-dropdown" className="w-full">
                         <SelectValue placeholder="Select an answer" />
                       </SelectTrigger>
                       <SelectContent className="w-full">
@@ -279,7 +322,7 @@ export function StudentForm() {
                   <FormLabel>Food Handlers Following Protocols</FormLabel>
                   <FormControl>
                     <Select {...field} onValueChange={field.onChange}>
-                      <SelectTrigger id="mess-dropdown" className="w-full">
+                      <SelectTrigger id="food-handler-dropdown" className="w-full">
                         <SelectValue placeholder="Select an answer" />
                       </SelectTrigger>
                       <SelectContent className="w-full">
@@ -331,7 +374,7 @@ export function StudentForm() {
                   <FormLabel>Category of Complaints</FormLabel>
                   <FormControl>
                     <Select {...field} onValueChange={field.onChange}>
-                      <SelectTrigger id="mess-dropdown" className="w-full">
+                      <SelectTrigger id="category-dropdown" className="w-full">
                         <SelectValue placeholder="Select an answer" />
                       </SelectTrigger>
                       <SelectContent className="w-full">
@@ -355,7 +398,7 @@ export function StudentForm() {
                   <FormLabel>Meal Time</FormLabel>
                   <FormControl>
                     <Select {...field} onValueChange={field.onChange}>
-                      <SelectTrigger id="mess-dropdown" className="w-full">
+                      <SelectTrigger id="meal-time-dropdown" className="w-full">
                         <SelectValue placeholder="Select an answer" />
                       </SelectTrigger>
                       <SelectContent className="w-full">
@@ -371,7 +414,7 @@ export function StudentForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="col-span-2 mt-6 bg-[#6D52C1]">
+            <Button onClick={form.handleSubmit(onSubmit)} className="col-span-2 mt-6 bg-[#6D52C1]">
               Submit
             </Button>
           </fieldset>
