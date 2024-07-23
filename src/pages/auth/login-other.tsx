@@ -87,9 +87,9 @@ export default function LoginOtherPage() {
   },[isLoggedIn])
 
   return (
-    <div className="w-full flex flex-col justify-center items-center p-10">
+    <div className="w-full flex flex-col justify-center items-center p-3">
       <p className="text-[#6b46c1] text-2xl font-bold mb-10">Manage Access Login</p>
-      <div className="lg:w-[50%] sm:w-full bg-white p-5 shadow-lg rounded-lg">
+      <div className="lg:w-[50%] w-full bg-white p-5 shadow-lg rounded-lg">
 
         <Form {...form}>
           <form className="space-y-5">

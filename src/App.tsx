@@ -12,6 +12,9 @@ import { useEffect } from 'react';
 import { getMe } from './apis/auth';
 import ManagementHeader from './components/ManagementHeader';
 import ManagementHome from './pages/management/home';
+import CreateManagerScreen from './pages/management/create-manager';
+import PendingQueries from './pages/management/pending-queries';
+import ResolvedQueries from './pages/management/resolved-queries';
 
 function App() {
 
@@ -43,22 +46,29 @@ function App() {
   }, [])
 
 
+  let header = <Header />
+
+  if (isLoggedIn && userDetail?.role === "SUPERVISOR") {
+    header = <ManagementHeader />
+  }
+
+
   return (
     <div className='min-h-screen bg-[#f4f4f4]'>
 
       {
-        !isLoggedIn && <Header />
+        header
       }
+      <Routes>
+        <Route path="/login-student" element={<LoginStudentPage />} />
+        <Route path="/login-other" element={<LoginOtherPage />} />
+        <Route path="/" element={<ManagementHome />} />
+        <Route path="/create-manager" element={<CreateManagerScreen />} />
+        <Route path="/pending-queries" element={<PendingQueries />} />
+        <Route path="/resolved-queries" element={<ResolvedQueries />} />
 
-      {
-        userDetail?.role === "SUPERVISOR" &&  <ManagementHeader />
-      }
-        <Routes>
-          <Route path="/login-student" element={<LoginStudentPage />} />
-          <Route path="/login-other" element={<LoginOtherPage />} />
-          <Route path="/" element={<ManagementHome />} />
-          {/* <Route path="*" element={<NotFound />} /> */}
-        </Routes>
+        {/* <Route path="*" element={<NotFound />} /> */}
+      </Routes>
       <Toaster />
     </div>
   )

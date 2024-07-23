@@ -27,8 +27,6 @@ export async function loginOther(email: string, password: string): Promise<boole
 
         const jsn = await resp.json()
 
-
-        console.log(jsn, "=====")
         localStorage.setItem("access", jsn.tokens.access.token)
 
         return true
@@ -72,6 +70,44 @@ export async function getMe(token: string): Promise<User | null> {
     } catch (err: any) {
         console.log(err)
         return null
+    }
+
+}
+
+
+
+export async function createUser (token: string, name: string, email: string, password: string, role: string): Promise<boolean> {
+    console.log(token)
+    try {
+
+        const resp = await fetch(
+            BACKEND_URL + "/users",
+            {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    password,
+                    role
+                })
+            }
+        )
+
+        if (resp.status === 201 || resp.status === 304) {
+            return true;
+        }
+
+        return false;
+
+
+
+    } catch (err: any) {
+        console.log(err)
+        return false;
     }
 
 }
