@@ -1,10 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAtom } from "jotai";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card";
 import { loginAtom } from "../../atoms/autAtom";
+import { DashboardData } from "../../interfaces";
+import { getDashboard } from "../../apis/complaint";
 
 
 const cards_info = [
@@ -13,7 +15,7 @@ const cards_info = [
         description: "Total number of quries Pending"
     },
     {
-        title: "Completed",
+        title: "Resolved",
         description: "Total number of quries Completed"
     },
     {
@@ -26,7 +28,20 @@ export default function ManagementHome() {
 
     const [isLoggedIn,] = useAtom(loginAtom);
     const navigate = useNavigate();
+    const [dashboardData, setDashboardData] = useState<DashboardData>({
+        pending: 0,
+        resolved: 0,
+        total: 0
+    })
 
+
+    const getDashboardData = async () => {
+        const token = localStorage.getItem("access")
+        let dashboardData = await getDashboard(token!);
+        if (dashboardData !== null) {
+            setDashboardData(dashboardData);
+        }
+    }
 
 
     useEffect(() => {
@@ -34,6 +49,8 @@ export default function ManagementHome() {
         if (!isLoggedIn) {
             navigate("/login-student");
         }
+
+        getDashboardData();
 
     }, [isLoggedIn])
 
@@ -50,7 +67,7 @@ export default function ManagementHome() {
 
                         if (item.title === "Pending") {
                             color = "text-yellow-500"
-                        } else if (item.title === "Completed") {
+                        } else if (item.title === "Resolved") {
                             color = "text-green-500"
                         } else {
                             color = "text-brown-500"
@@ -63,7 +80,17 @@ export default function ManagementHome() {
                                     <CardDescription>{item.description}</CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <p className={`text-lg font-semibold ${color}`}>100</p>
+                                <p className={`text-lg font-semibold ${color}`}>
+                                    {
+                                        item.title === "Pending" && dashboardData.pending
+                                    }
+                                    {
+                                        item.title === "Resolved" && dashboardData.resolved
+                                    }
+                                    {
+                                        item.title === "Total" && dashboardData.total
+                                    }
+                                </p>
                                 </CardContent>
                             </Card>
                         )

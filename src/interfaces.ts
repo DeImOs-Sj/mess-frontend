@@ -25,3 +25,10 @@ export interface Complaint {
     meal_time: string,
     image_photos: string[],
 }
+
+
+export interface DashboardData {
+    pending: number,
+    resolved: number,
+    total: number
+}
