@@ -74,6 +74,8 @@ export default function LoginOtherPage() {
         description: "You are successfully logged in",
       })
       setIsLoggedin(true);
+      navigate("/");
+
     }
 
   }

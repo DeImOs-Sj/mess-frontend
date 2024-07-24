@@ -15,9 +15,11 @@ export async function loginOther(email: string, password: string): Promise<boole
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    email,
-                    password
-                }),
+                    "email": email,
+                    "phoneNo": "",
+                    "role": "SUPERVISOR",
+                    "password": password
+                  }),
             }
         )
 
@@ -41,7 +43,7 @@ export async function loginOther(email: string, password: string): Promise<boole
 
 
 
-export async function loginStudent(email: string, password: string): Promise<boolean> {
+export async function loginStudent(phoneNo: string): Promise<boolean> {
 
     try {
 
@@ -53,9 +55,11 @@ export async function loginStudent(email: string, password: string): Promise<boo
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    email,
-                    password
-                }),
+                    "email": "",
+                    "phoneNo": phoneNo,
+                    "role": "STUDENT",
+                    "password": "password1"
+                  }),
             }
         )
 

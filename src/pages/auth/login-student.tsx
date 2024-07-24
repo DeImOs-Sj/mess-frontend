@@ -21,11 +21,10 @@ import { loginAtom, userDetailsAtom } from "../../atoms/autAtom.ts";
 import { loginStudent } from "../../apis/auth.ts";
 
 const formSchema = z.object({
-  // phoneno: z
-  //   .string()
-  //   .min(10, { message: "Phone number must be of 10 digits." })
-  //   .max(10, { message: "Phone number must be of 10 digits." }),
-  email: z.string().email(),
+  phoneNo: z
+    .string()
+    .min(10, { message: "Phone number must be of 10 digits." })
+    .max(10, { message: "Phone number must be of 10 digits." }),
   otp: z.string().min(4).max(4),
 });
 
@@ -41,7 +40,7 @@ export default function LoginStudentPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      phoneNo: "",
       otp: "0000",
     },
   });
@@ -61,7 +60,7 @@ export default function LoginStudentPage() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
 
-    const reslt = await loginStudent(values.email, "password1");
+    const reslt = await loginStudent(values.phoneNo);
 
     if (reslt === true) {
       toast({
@@ -69,6 +68,7 @@ export default function LoginStudentPage() {
         description: "You are successfully logged in",
       });
       setIsLoggedin(true);
+      navigate("/complaint");
     }
   }
 
@@ -89,19 +89,19 @@ export default function LoginStudentPage() {
           <form className="space-y-8">
             <FormField
               control={form.control}
-              name="email"
+              name="phoneNo"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
-                      type="email"
-                      placeholder="rakesh@gmail.com"
+                      type="number"
+                      placeholder="7463827465"
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    Enter Mess registerd email id
+                    Enter Mess registerd Phone number
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
