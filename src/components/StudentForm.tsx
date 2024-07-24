@@ -436,7 +436,7 @@ export function StudentForm() {
 
             <Button
               onClick={form.handleSubmit(onSubmit)}
-              className="col-span-2 mt-6 bg-[#6D52C1]"
+              className="col-span-2 mt-6 bg-[#6b46c1] hover:bg-[#5f3eac]"
             >
               Submit
             </Button>

@@ -123,7 +123,7 @@ export async function createUser (token: string, name: string, email: string, pa
     try {
 
         const resp = await fetch(
-            BACKEND_URL + "/users",
+            BACKEND_URL + "/auth/register",
             {
                 method: "POST",
                 headers: {
@@ -133,8 +133,9 @@ export async function createUser (token: string, name: string, email: string, pa
                 body: JSON.stringify({
                     name: name,
                     email: email,
-                    password: password,
+                    phoneNo: "",
                     role: role,
+                    password: password,
                 })
             }
         )

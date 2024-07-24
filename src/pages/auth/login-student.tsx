@@ -128,7 +128,7 @@ export default function LoginStudentPage() {
               <Button
                 onClick={form.handleSubmit(onSubmit)}
                 type="submit"
-                className="w-full bg-[#6b46c1] transition-colors hover:bg-[#007bffd9]"
+                className="w-full bg-[#6b46c1] transition-colors hover:bg-[#5f3eac]"
               >
                 Login
               </Button>
@@ -136,7 +136,7 @@ export default function LoginStudentPage() {
               <Button
                 onClick={form.handleSubmit(onSubmitPhoneNo)}
                 type="submit"
-                className="w-full bg-[#6b46c1] transition-colors hover:bg-[#007bffd9]"
+                className="w-full bg-[#6b46c1] transition-colors hover:bg-[#5f3eac]"
               >
                 Generate OPT
               </Button>

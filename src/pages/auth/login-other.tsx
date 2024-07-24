@@ -157,7 +157,7 @@ export default function LoginOtherPage() {
 
 
 
-            <Button onClick={form.handleSubmit(onSubmit)} className="w-full bg-[#6b46c1] transition-colors hover:bg-[#007bffd9]" >Login</Button>
+            <Button onClick={form.handleSubmit(onSubmit)} className="w-full bg-[#6b46c1] transition-colors hover:bg-[#5f3eac]" >Login</Button>
 
 
           </form>

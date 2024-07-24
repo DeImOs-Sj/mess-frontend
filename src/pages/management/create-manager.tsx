@@ -47,8 +47,8 @@ interface RoleBasedAccess {
 
 export default function CreateManagerScreen() {
   const { toast } = useToast();
-  const [userDetail] = useAtom<string>(userDetailsAtom);
-  const [isLoggedIn, setIsLoggedin] = useAtom(loginAtom);
+  const [userDetail] = useAtom(userDetailsAtom);
+  const [isLoggedIn,] = useAtom(loginAtom);
   const [currentRole, setCurrentRole] = useState("");
 
   const navigate = useNavigate();
@@ -81,7 +81,7 @@ export default function CreateManagerScreen() {
       navigate("/login-student");
     } else {
       // Set the currentRole based on the user's role
-      setCurrentRole(userDetail.role);
+      setCurrentRole(userDetail?.role!);
     }
   }, [isLoggedIn, userDetail]);
 
@@ -179,7 +179,7 @@ export default function CreateManagerScreen() {
 
             <Button
               onClick={form.handleSubmit(onSubmit)}
-              className="w-full bg-[#6b46c1] transition-colors hover:bg-[#007bffd9]"
+              className="w-full bg-[#6b46c1] transition-colors hover:bg-[#5f3eac]"
             >
               Create User
             </Button>

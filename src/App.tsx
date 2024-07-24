@@ -16,6 +16,7 @@ import CreateManagerScreen from './pages/management/create-manager';
 import PendingQueries from './pages/management/pending-queries';
 import ResolvedQueries from './pages/management/resolved-queries';
 import ComplaintScreen from './pages/student/complaint';
+import StudentHeader from './components/StudentHeader';
 
 function App() {
 
@@ -51,6 +52,10 @@ function App() {
 
   if (isLoggedIn && userDetail?.role !== "STUDENT") {
     header = <ManagementHeader />
+  }
+
+  else {
+    header = <StudentHeader/>
   }
 
 
