@@ -10,7 +10,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { userDetailsAtom } from "../../atoms/autAtom.ts";
 
 import { Button } from "../../components/ui/button";
 
@@ -18,9 +20,6 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../../components/ui/dropdown-menu";
 import { Input } from "../../components/ui/input";
@@ -39,6 +38,10 @@ import { useNavigate } from "react-router-dom";
 import { formatDate } from "../../lib/utils";
 import { MessInfo } from "../../interfaces";
 import { getComplaints } from "../../apis/complaint";
+import Component from "../../components/ModalComponent";
+import ResolveModal from "../../components/ResolveModal";
+import { data } from "../../utils/dummyData";
+import ManagerResolverModal from "../../components/ManagerResolveModal";
 
 export const columns: ColumnDef<MessInfo>[] = [
   {
@@ -64,9 +67,7 @@ export const columns: ColumnDef<MessInfo>[] = [
   {
     accessorKey: "campus",
     header: () => <div className="text-justify">Campus</div>,
-    cell: ({ row }) => (
-      <div>{row.getValue("campus")}</div>
-    ),
+    cell: ({ row }) => <div>{row.getValue("campus")}</div>,
   },
   {
     accessorKey: "meal_time",
@@ -87,41 +88,211 @@ export const columns: ColumnDef<MessInfo>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{formatDate(row.getValue("date_of_happening"))}</div>
+      <div className="lowercase">
+        {formatDate(row.getValue("date_of_happening"))}
+      </div>
     ),
   },
   {
-    accessorKey: "Actions",
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
+    accessorKey: "See Issue",
+    header: () => <div className="text-justify">See Issue</div>,
+    cell: ({ row }) => <Component data={data} />,
+  },
+  {
+    accessorKey: "Resolve",
+    header: () => <div className="text-justify">Resolve</div>,
+    cell: ({ row }) => <ResolveModal />,
+  },
+];
 
+const managerColumns: ColumnDef<MessInfo>[] = [
+  {
+    accessorKey: "id",
+    header: "ID",
+    cell: ({ row }) => <div className="capitalize">{row.getValue("id")}</div>,
+  },
+  {
+    accessorKey: "mess",
+    header: ({ column }) => {
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText("1")}
-            >
-              Resolve Query
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Delete</DropdownMenuItem>
-            <DropdownMenuItem>Reply</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Mess
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
       );
     },
+    cell: ({ row }) => <div>{row.getValue("mess")}</div>,
+  },
+  {
+    accessorKey: "campus",
+    header: () => <div className="text-justify">Campus</div>,
+    cell: ({ row }) => <div>{row.getValue("campus")}</div>,
+  },
+  {
+    accessorKey: "meal_time",
+    header: () => <div className="text-justify">Meal Time</div>,
+    cell: ({ row }) => <div>{row.getValue("meal_time")}</div>,
+  },
+  {
+    accessorKey: "date_of_happening",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Happened On
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="lowercase">
+        {formatDate(row.getValue("date_of_happening"))}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "See Issue",
+    header: () => <div className="text-justify">See Issue</div>,
+    cell: ({ row }) => <Component data={data} />,
+  },
+  {
+    accessorKey: "Resolve",
+    header: () => <div className="text-justify">Resolve</div>,
+    cell: ({ row }) => <ResolveModal />,
+  },
+];
+
+const supervisorColumns: ColumnDef<MessInfo>[] = [
+  {
+    accessorKey: "id",
+    header: "ID",
+    cell: ({ row }) => <div className="capitalize">{row.getValue("id")}</div>,
+  },
+  {
+    accessorKey: "mess",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Mess
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div>{row.getValue("mess")}</div>,
+  },
+  {
+    accessorKey: "campus",
+    header: () => <div className="text-justify">Campus</div>,
+    cell: ({ row }) => <div>{row.getValue("campus")}</div>,
+  },
+  {
+    accessorKey: "meal_time",
+    header: () => <div className="text-justify">Meal Time</div>,
+    cell: ({ row }) => <div>{row.getValue("meal_time")}</div>,
+  },
+  {
+    accessorKey: "date_of_happening",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Happened On
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="lowercase">
+        {formatDate(row.getValue("date_of_happening"))}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "See Issue",
+    header: () => <div className="text-justify">See Issue</div>,
+    cell: ({ row }) => <Component data={data} />,
+  },
+  {
+    accessorKey: "Manager Resolvements",
+    header: () => <div className="text-justify">Manager Resolvements</div>,
+    cell: ({ row }) => <ManagerResolverModal />,
+  },
+  {
+    accessorKey: "Resolve",
+    header: () => <div className="text-justify">Resolve</div>,
+    cell: ({ row }) => <Button className="bg-[#6D52C1]">Resolve</Button>,
+  },
+];
+
+const commonColumns: ColumnDef<MessInfo>[] = [...managerColumns];
+
+const residentOfficerColumns: ColumnDef<MessInfo>[] = [
+  {
+    accessorKey: "id",
+    header: "ID",
+    cell: ({ row }) => <div className="capitalize">{row.getValue("id")}</div>,
+  },
+  {
+    accessorKey: "mess",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Mess
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div>{row.getValue("mess")}</div>,
+  },
+  {
+    accessorKey: "campus",
+    header: () => <div className="text-justify">Campus</div>,
+    cell: ({ row }) => <div>{row.getValue("campus")}</div>,
+  },
+  {
+    accessorKey: "meal_time",
+    header: () => <div className="text-justify">Meal Time</div>,
+    cell: ({ row }) => <div>{row.getValue("meal_time")}</div>,
+  },
+  {
+    accessorKey: "date_of_happening",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Happened On
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="lowercase">
+        {formatDate(row.getValue("date_of_happening"))}
+      </div>
+    ),
   },
 ];
 
 export default function PendingQueries() {
+  const [userDetail] = useAtom(userDetailsAtom);
+  const userRole = userDetail ? userDetail.role : null;
+
+  console.log(userRole);
 
   const [data, setData] = React.useState<MessInfo[]>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -132,13 +303,30 @@ export default function PendingQueries() {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
-
   const fetchData = async () => {
-    const token = localStorage.getItem("access")
+    const token = localStorage.getItem("access");
     let mess_data = await getComplaints(token!, 0);
     setData(mess_data);
-  }
+  };
 
+  console.log(userDetail);
+
+  // Determine the columns based on user role
+  const columns = React.useMemo(() => {
+    if (userRole === "MANAGER") {
+      return [...commonColumns, ...managerColumns];
+    } else if (userRole === "SUPERVISOR") {
+      return [...supervisorColumns];
+    } else if (userRole === "RESIDENT_OFFICER") {
+      return residentOfficerColumns;
+    } else if (userRole === "CAMPUS_DIRECTOR") {
+      return residentOfficerColumns;
+    } else if (userRole === "COMMITTEE") {
+      return residentOfficerColumns;
+    } else {
+      return commonColumns;
+    }
+  }, [userRole]);
 
   const table = useReactTable({
     data,
@@ -221,9 +409,9 @@ export default function PendingQueries() {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
                       </TableHead>
                     );
                   })}
