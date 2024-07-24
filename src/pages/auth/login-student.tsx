@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { useToast } from "../../components/ui/use-toast.ts";
 import { Link, useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
-import { loginAtom } from "../../atoms/autAtom.ts";
+import { loginAtom, userDetailsAtom } from "../../atoms/autAtom.ts";
 import { loginStudent } from "../../apis/auth.ts";
 
 const formSchema = z.object({
@@ -32,6 +32,7 @@ const formSchema = z.object({
 export default function LoginStudentPage() {
   const [optSent, setOTPSent] = useState(false);
   const [isLoggedIn, setIsLoggedin] = useAtom(loginAtom);
+  const [userDetail,] = useAtom(userDetailsAtom);
 
   const { toast } = useToast();
 
@@ -72,8 +73,11 @@ export default function LoginStudentPage() {
   }
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && userDetail?.role === "STUDENT") {
       navigate("/complaint");
+    }
+    if (isLoggedIn && userDetail?.role !== "STUDENT") {
+      navigate("/");
     }
   }, [isLoggedIn]);
 

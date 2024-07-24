@@ -31,7 +31,7 @@ import {
 import { useToast } from "../../components/ui/use-toast.ts";
 import { loginOther } from "../../apis/auth.ts";
 import { useAtom } from "jotai";
-import { loginAtom } from "../../atoms/autAtom.ts";
+import { loginAtom, userDetailsAtom } from "../../atoms/autAtom.ts";
 import { useNavigate } from "react-router-dom";
 
 
@@ -49,6 +49,7 @@ export default function LoginOtherPage() {
 
   const { toast } = useToast();
   const [isLoggedIn, setIsLoggedin] = useAtom(loginAtom);
+  const [userDetail,] = useAtom(userDetailsAtom);
 
   const navigate = useNavigate();
 
@@ -80,7 +81,7 @@ export default function LoginOtherPage() {
 
   useEffect(()=>{
     
-    if (isLoggedIn) {
+    if (isLoggedIn && userDetail?.role !== "STUDENT") {
       navigate("/");
     }
 

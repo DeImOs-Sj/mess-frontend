@@ -66,8 +66,8 @@ function App() {
         <Route path="/" element={<ManagementHome />} />
         <Route path="/create-manager" element={<CreateManagerScreen />} />
         <Route path="/pending-queries" element={<PendingQueries />} />
-        <Route path="/resolved-queries" element={<ResolvedQueries />} />
         <Route path="/complaint" element={<ComplaintScreen />} />
+        <Route path="/resolved-queries" element={<ResolvedQueries />} />
 
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
