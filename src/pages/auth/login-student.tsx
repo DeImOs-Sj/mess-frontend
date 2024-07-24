@@ -92,7 +92,7 @@ export default function LoginStudentPage() {
               name="phoneNo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Phone Number</FormLabel>
                   <FormControl>
                     <Input
                       type="number"

@@ -1,5 +1,5 @@
 import { resolve } from "path"
-import { Complaint, DashboardData } from "../interfaces"
+import { Complaint, DashboardData, MessInfo } from "../interfaces"
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
@@ -80,6 +80,40 @@ export async function getDashboard(token: string): Promise<DashboardData | null>
     } catch (err: any) {
         console.log(err)
         return null
+    }
+
+}
+
+
+
+export async function getComplaints(token: string, status: number): Promise<MessInfo[]> {
+
+    try {
+
+        const resp = await fetch(
+            BACKEND_URL + `/complaint?page=1&limit=100&sortBy=createdAt&status=${status}`,
+            {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+            }
+        )
+    
+        if (resp.status !== 200) {
+            return [];
+        }
+        
+        const jsn: MessInfo[] = await resp.json();
+
+
+        return jsn;
+
+
+    } catch (err: any) {
+        console.log(err)
+        return []
     }
 
 }

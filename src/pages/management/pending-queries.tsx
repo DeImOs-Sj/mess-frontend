@@ -13,7 +13,7 @@ import {
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
 import { Button } from "../../components/ui/button";
-import { Checkbox } from "../../components/ui/checkbox";
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -32,49 +32,13 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { loginAtom } from "../../atoms/autAtom";
 import { useNavigate } from "react-router-dom";
-
-const data: MessInfo[] = [
-  {
-    id: "1",
-    mess: "SIT Vadgaon Mess",
-    campus: "Ambegaon",
-    type: "Cleanliness",
-    timestamp: "20-03-2024",
-  },
-  {
-    id: "2",
-    mess: "SIT Vadgaon Mess",
-    campus: "Ambegaon",
-    type: "Cleanliness",
-    timestamp: "20-03-2024",
-  },
-  {
-    id: "3",
-    mess: "SIT Vadgaon Mess",
-    campus: "Ambegaon",
-    type: "Cleanliness",
-    timestamp: "20-03-2024",
-  },
-  {
-    id: "4",
-    mess: "SIT Vadgaon Mess",
-    campus: "Ambegaon",
-    type: "Cleanliness",
-    timestamp: "20-03-2024",
-  },
-];
-
-export type MessInfo = {
-  id: string;
-  mess: string;
-  campus: string;
-  type: string;
-  timestamp: string;
-};
+import { formatDate } from "../../lib/utils";
+import { MessInfo } from "../../interfaces";
+import { getComplaints } from "../../apis/complaint";
 
 export const columns: ColumnDef<MessInfo>[] = [
   {
@@ -95,25 +59,35 @@ export const columns: ColumnDef<MessInfo>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("mess")}</div>,
+    cell: ({ row }) => <div>{row.getValue("mess")}</div>,
   },
   {
     accessorKey: "campus",
     header: () => <div className="text-justify">Campus</div>,
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("campus")}</div>
+      <div>{row.getValue("campus")}</div>
     ),
   },
   {
-    accessorKey: "type",
-    header: () => <div className="text-justify">Type</div>,
-    cell: ({ row }) => <div className="lowercase">{row.getValue("type")}</div>,
+    accessorKey: "meal_time",
+    header: () => <div className="text-justify">Meal Time</div>,
+    cell: ({ row }) => <div>{row.getValue("meal_time")}</div>,
   },
   {
-    accessorKey: "timestamp",
-    header: () => <div className="text-justify">Timestamp</div>,
+    accessorKey: "date_of_happening",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Happened On
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("timestamp")}</div>
+      <div className="lowercase">{formatDate(row.getValue("date_of_happening"))}</div>
     ),
   },
   {
@@ -121,7 +95,6 @@ export const columns: ColumnDef<MessInfo>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
 
       return (
         <DropdownMenu>
@@ -134,7 +107,7 @@ export const columns: ColumnDef<MessInfo>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText("1")}
             >
               Resolve Query
             </DropdownMenuItem>
@@ -149,6 +122,8 @@ export const columns: ColumnDef<MessInfo>[] = [
 ];
 
 export default function PendingQueries() {
+
+  const [data, setData] = React.useState<MessInfo[]>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -156,6 +131,14 @@ export default function PendingQueries() {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+
+
+  const fetchData = async () => {
+    const token = localStorage.getItem("access")
+    let mess_data = await getComplaints(token!, 0);
+    setData(mess_data);
+  }
+
 
   const table = useReactTable({
     data,
@@ -183,11 +166,13 @@ export default function PendingQueries() {
     if (!isLoggedIn) {
       navigate("/login-student");
     }
+
+    fetchData();
   }, [isLoggedIn]);
 
   return (
-    <div className="w-full h-screen mt-10 flex flex-col justify-center items-center">
-      <p className="text-[#6b46c1] text-2xl font-bold mb-10">Pending Queries</p>
+    <div className="w-full min-h-screen pt-[100px] flex flex-col justify-evenly items-center">
+      <p className="text-[#6b46c1] text-2xl font-bold">Pending Queries</p>
       <div className="w-[80%] p-10 bg-white m-10 rounded-lg shadow-lg">
         <div className="flex items-center py-4">
           <Input
@@ -236,9 +221,9 @@ export default function PendingQueries() {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                       </TableHead>
                     );
                   })}

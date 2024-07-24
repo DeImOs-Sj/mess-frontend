@@ -32,3 +32,14 @@ export interface DashboardData {
     resolved: number,
     total: number
 }
+
+export type MessInfo = {
+    id: number
+    campus: string
+    mess: string
+    date_of_happening: string
+    is_clean: boolean
+    status: number
+    meal_time: string
+    createdAt: string
+};
