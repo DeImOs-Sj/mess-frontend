@@ -26,7 +26,6 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Calendar } from "./ui/calendar";
 
-
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createComplaint } from "../apis/complaint";
@@ -34,7 +33,6 @@ import { useToast } from "./ui/use-toast";
 import { useAtom } from "jotai";
 import { loginAtom } from "../atoms/autAtom";
 import { Complaint } from "../interfaces";
-
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid Email" }),
@@ -51,9 +49,7 @@ const formSchema = z.object({
   suggestion_improvement: z.string(),
   complaint_category: z.string(),
   meal_time: z.string().default("LUNCH"),
-})
-
-
+});
 
 export function StudentForm() {
   const [date, setDate] = React.useState<Date | undefined>(undefined);
@@ -79,12 +75,12 @@ export function StudentForm() {
       complaint_category: "",
       meal_time: "BREAKFAST",
     },
-  })
+  });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log("====")
+    console.log("====");
     const complaint: Complaint = {
       email: values.email,
       campus: values.campus,
@@ -101,20 +97,19 @@ export function StudentForm() {
       complaint_category: values.complaint_category,
       meal_time: values.meal_time,
       image_photos: [],
-    }
+    };
 
     const authToken = localStorage.getItem("access");
-    const reslt = await createComplaint(authToken!,complaint);
+    const reslt = await createComplaint(authToken!, complaint);
 
     if (reslt === true) {
       toast({
         title: "Raise",
         description: "Complaint successfully raised",
-      })
+      });
 
       form.reset();
     }
-
   }
 
   return (
@@ -135,6 +130,49 @@ export function StudentForm() {
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="student_name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name of Student</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter your name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="student_phno"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone Number</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter your phone number" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="college_name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>College Name and Class</FormLabel>
+                  <FormControl>
+                    <Input placeholder="NBN Sinhgad" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <Controller
               control={form.control}
               name="campus"
@@ -174,11 +212,21 @@ export function StudentForm() {
                       </SelectTrigger>
                       <SelectContent className="w-full h-[300px] overflow-y-scroll">
                         <SelectGroup>
-                          <SelectItem value="Sinhgad Rohini Mess">Sinhgad Rohini Mess</SelectItem>
-                          <SelectItem value="Sinhgad Rakesh Mess">Sinhgad Rakesh Mess</SelectItem>
-                          <SelectItem value="Sinhgad Ram Mess">Sinhgad Ram Mess</SelectItem>
-                          <SelectItem value="Sinhgad Sham Mess">Sinhgad Sham Mess</SelectItem>
-                          <SelectItem value="Sinhgad Generic Mess">Sinhgad Generic Mess</SelectItem>
+                          <SelectItem value="Sinhgad Rohini Mess">
+                            Sinhgad Rohini Mess
+                          </SelectItem>
+                          <SelectItem value="Sinhgad Rakesh Mess">
+                            Sinhgad Rakesh Mess
+                          </SelectItem>
+                          <SelectItem value="Sinhgad Ram Mess">
+                            Sinhgad Ram Mess
+                          </SelectItem>
+                          <SelectItem value="Sinhgad Sham Mess">
+                            Sinhgad Sham Mess
+                          </SelectItem>
+                          <SelectItem value="Sinhgad Generic Mess">
+                            Sinhgad Generic Mess
+                          </SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -187,6 +235,7 @@ export function StudentForm() {
                 </FormItem>
               )}
             />
+
             <Controller
               control={form.control}
               name="date_of_happening"
@@ -217,7 +266,7 @@ export function StudentForm() {
                           selected={date}
                           onSelect={(selectedDate) => {
                             setDate(selectedDate);
-                            form.setValue("date_of_happening",selectedDate!);
+                            form.setValue("date_of_happening", selectedDate!);
                             field.onChange(selectedDate);
                           }}
                           initialFocus
@@ -229,45 +278,60 @@ export function StudentForm() {
                 </FormItem>
               )}
             />
-            <FormField
+
+            <Controller
               control={form.control}
-              name="student_name"
+              name="meal_time"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name of Student</FormLabel>
+                  <FormLabel>Meal Time</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your name" {...field} />
+                    <Select {...field} onValueChange={field.onChange}>
+                      <SelectTrigger id="meal-time-dropdown" className="w-full">
+                        <SelectValue placeholder="Select an answer" />
+                      </SelectTrigger>
+                      <SelectContent className="w-full">
+                        <SelectGroup>
+                          <SelectItem value="BREAKFAST">Breakfast</SelectItem>
+                          <SelectItem value="LUNCH">Lunch</SelectItem>
+                          <SelectItem value="DINNER">Dinner</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
+
+            <Controller
               control={form.control}
-              name="student_phno"
+              name="complaint_category"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
+                  <FormLabel>Category of Complaints</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your phone number" {...field} />
+                    <Select {...field} onValueChange={field.onChange}>
+                      <SelectTrigger id="category-dropdown" className="w-full">
+                        <SelectValue placeholder="Select an answer" />
+                      </SelectTrigger>
+                      <SelectContent className="w-full">
+                        <SelectGroup>
+                          <SelectItem value="FOOD_QUALITY">
+                            Food Quality
+                          </SelectItem>
+                          <SelectItem value="CLEANLINESS">
+                            Cleanliness
+                          </SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="college_name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>College Name and Class</FormLabel>
-                  <FormControl>
-                    <Input placeholder="NBN Sinhgad" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
             <Controller
               control={form.control}
               name="is_clean"
@@ -319,10 +383,13 @@ export function StudentForm() {
               name="food_handler_protocols"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Food Handlers Following Protocols</FormLabel>
+                  <FormLabel>Follow Necessary Protocols</FormLabel>
                   <FormControl>
                     <Select {...field} onValueChange={field.onChange}>
-                      <SelectTrigger id="food-handler-dropdown" className="w-full">
+                      <SelectTrigger
+                        id="food-handler-dropdown"
+                        className="w-full"
+                      >
                         <SelectValue placeholder="Select an answer" />
                       </SelectTrigger>
                       <SelectContent className="w-full">
@@ -355,7 +422,7 @@ export function StudentForm() {
               name="suggestion_improvement"
               render={({ field }) => (
                 <FormItem className="col-span-2">
-                  <FormLabel>Suggestion for Improvements</FormLabel>
+                  <FormLabel>Suggestion If Any</FormLabel>
                   <FormControl>
                     <Input
                       placeholder=" Any suggestion for improvements"
@@ -366,55 +433,11 @@ export function StudentForm() {
                 </FormItem>
               )}
             />
-            <Controller
-              control={form.control}
-              name="complaint_category"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Category of Complaints</FormLabel>
-                  <FormControl>
-                    <Select {...field} onValueChange={field.onChange}>
-                      <SelectTrigger id="category-dropdown" className="w-full">
-                        <SelectValue placeholder="Select an answer" />
-                      </SelectTrigger>
-                      <SelectContent className="w-full">
-                        <SelectGroup>
-                          <SelectItem value="FOOD_QUALITY">Food Quality</SelectItem>
-                          <SelectItem value="CLEANLINESS">Cleanliness</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
-            <Controller
-              control={form.control}
-              name="meal_time"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Meal Time</FormLabel>
-                  <FormControl>
-                    <Select {...field} onValueChange={field.onChange}>
-                      <SelectTrigger id="meal-time-dropdown" className="w-full">
-                        <SelectValue placeholder="Select an answer" />
-                      </SelectTrigger>
-                      <SelectContent className="w-full">
-                        <SelectGroup>
-                          <SelectItem value="BREAKFAST">Breakfast</SelectItem>
-                          <SelectItem value="LUNCH">Lunch</SelectItem>
-                          <SelectItem value="DINNER">Dinner</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button onClick={form.handleSubmit(onSubmit)} className="col-span-2 mt-6 bg-[#6D52C1]">
+            <Button
+              onClick={form.handleSubmit(onSubmit)}
+              className="col-span-2 mt-6 bg-[#6D52C1]"
+            >
               Submit
             </Button>
           </fieldset>

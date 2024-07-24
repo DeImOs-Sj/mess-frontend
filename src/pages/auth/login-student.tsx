@@ -32,7 +32,7 @@ const formSchema = z.object({
 export default function LoginStudentPage() {
   const [optSent, setOTPSent] = useState(false);
   const [isLoggedIn, setIsLoggedin] = useAtom(loginAtom);
-  
+
   const { toast } = useToast();
 
   const navigate = useNavigate();
@@ -56,21 +56,19 @@ export default function LoginStudentPage() {
     });
   }
 
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
 
-    const reslt = await loginStudent(values.email,"password1");
+    const reslt = await loginStudent(values.email, "password1");
 
     if (reslt === true) {
       toast({
         title: "Welcome",
         description: "You are successfully logged in",
-      })
+      });
       setIsLoggedin(true);
     }
-
   }
 
   useEffect(() => {
@@ -81,7 +79,7 @@ export default function LoginStudentPage() {
 
   return (
     <div className="w-full flex flex-col justify-center items-center p-10">
-      <p className="text-[#6b46c1] text-2xl font-bold mb-10">Student Login</p>
+      {/* <p className="text-[#6b46c1] text-2xl font-bold mb-10">Student Login</p> */}
       <div className="lg:w-[50%] sm:w-full bg-white p-5 shadow-lg rounded-lg">
         <Form {...form}>
           <form className="space-y-8">
@@ -92,7 +90,11 @@ export default function LoginStudentPage() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="rakesh@gmail.com" {...field} />
+                    <Input
+                      type="email"
+                      placeholder="rakesh@gmail.com"
+                      {...field}
+                    />
                   </FormControl>
                   <FormDescription>
                     Enter Mess registerd email id
