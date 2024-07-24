@@ -119,6 +119,7 @@ export async function getMe(token: string): Promise<User | null> {
 
 export async function createUser (token: string, name: string, email: string, password: string, role: string): Promise<boolean> {
 
+    console.log(email)
     try {
 
         const resp = await fetch(
@@ -130,10 +131,10 @@ export async function createUser (token: string, name: string, email: string, pa
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    name,
-                    email,
-                    password,
-                    role
+                    name: name,
+                    email: email,
+                    password: password,
+                    role: role,
                 })
             }
         )

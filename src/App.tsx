@@ -49,7 +49,7 @@ function App() {
 
   let header = <Header />
 
-  if (isLoggedIn && userDetail?.role === "SUPERVISOR") {
+  if (isLoggedIn && userDetail?.role !== "STUDENT") {
     header = <ManagementHeader />
   }
 
