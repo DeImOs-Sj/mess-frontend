@@ -211,7 +211,13 @@ export function StudentForm() {
                       <SelectContent className="w-full h-[300px] overflow-y-scroll">
                         <SelectGroup>
                           <SelectItem value="Sinhgad Rohini Mess">
-                            Sinhgad Rohini Mess
+                            Sinhgad Annapurna Mess
+                          </SelectItem>
+                          <SelectItem value="Sinhgad Rohini Mess">
+                            Sinhgad Amrapali Mess
+                          </SelectItem>
+                          <SelectItem value="Sinhgad Rohini Mess">
+                            Sinhgad Deepali Mess
                           </SelectItem>
                           <SelectItem value="Sinhgad Rakesh Mess">
                             Sinhgad Rakesh Mess
