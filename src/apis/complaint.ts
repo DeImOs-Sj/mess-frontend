@@ -1,4 +1,4 @@
-import { Complaint, DashboardData, MessInfo } from "../interfaces"
+import { Complaint, DashboardData, DetailMessInfo, MessInfo } from "../interfaces"
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
@@ -114,6 +114,43 @@ export async function getComplaints(token: string, status: number): Promise<Mess
     } catch (err: any) {
         console.log(err)
         return []
+    }
+
+}
+
+
+
+
+
+export async function getComplaint(token: string, complaintId: number): Promise<DetailMessInfo | null> {
+
+    try {
+
+        const resp = await fetch(
+            BACKEND_URL + `/complaint/${complaintId}`,
+            {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+            }
+        )
+    
+        if (resp.status !== 200) {
+            return null;
+        }
+        
+        const jsn: DetailMessInfo = await resp.json();
+        console.log(jsn)
+
+
+        return jsn;
+
+
+    } catch (err: any) {
+        console.log(err)
+        return null
     }
 
 }

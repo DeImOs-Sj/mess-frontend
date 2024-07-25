@@ -40,7 +40,6 @@ import { MessInfo } from "../../interfaces";
 import { getComplaints } from "../../apis/complaint";
 import Component from "../../components/ModalComponent";
 import ResolveModal from "../../components/ResolveModal";
-import { data } from "../../utils/dummyData";
 import ManagerResolverModal from "../../components/ManagerResolveModal";
 
 export const columns: ColumnDef<MessInfo>[] = [
@@ -96,7 +95,7 @@ export const columns: ColumnDef<MessInfo>[] = [
   {
     accessorKey: "See Issue",
     header: () => <div className="text-justify">See Issue</div>,
-    cell: () => <Component data={data} />,
+    cell: ({ row }) => <Component complaintId={row.getValue("id")} />,
   },
   {
     accessorKey: "Resolve",
@@ -164,7 +163,7 @@ const managerColumns: ColumnDef<MessInfo>[] = [
   {
     accessorKey: "See Issue",
     header: () => <div className="text-justify">See Issue</div>,
-    cell: () => <Component data={data} />,
+    cell: ({ row }) => <Component complaintId={row.getValue('id')} />,
   },
   {
     accessorKey: "Resolve",
@@ -231,7 +230,7 @@ const supervisorColumns: ColumnDef<MessInfo>[] = [
   {
     accessorKey: "See Issue",
     header: () => <div className="text-justify">See Issue</div>,
-    cell: () => <Component data={data} />,
+    cell: ({ row }) => <Component complaintId={row.getValue('id')} />,
   },
   {
     accessorKey: "Manager Resolvements",

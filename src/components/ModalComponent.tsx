@@ -31,36 +31,68 @@ import { useForm, Controller } from "react-hook-form";
 import { cn } from "../lib/utils";
 import { Input } from "./ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { DetailMessInfo } from "../interfaces";
+import { getComplaint } from "../apis/complaint";
 
 interface ComponentInterface {
-  data: any
+  complaintId: number
 }
 
-const Component: React.FC<ComponentInterface> = ({ data }) => {
+const Component: React.FC<ComponentInterface> = ({ complaintId }) => {
   const [date, setDate] = React.useState<Date | undefined>(undefined);
 
-  const form = useForm({
+  let form = useForm({
     defaultValues: {
-      email: data.email || "",
-      student_name: data.student || "",
-      student_phno: data.phone || "",
-      college_name: data.college || "",
-      campus: data.campus || "Ambegaon",
-      mess: data.mess || "Sinhgad Rohini Mess",
-      date_of_happening: data.date_of_happening || "",
-      meal_time: data.meal_time || "LUNCH",
-      complaint_category: data.complaint_category || "FOOD_QUALITY",
-      is_clean: data.is_clean || "YES",
-      is_pest_controlled: data.is_pest_controlled || "NO",
-      food_handler_protocols: data.food_handler_protocols || "Yes",
-      complaint_desc: data.foodRelatedComplaints || "",
-      suggestion_improvement: data.suggestions || "",
+      email: "",
+      student_name: "",
+      student_phno: "",
+      college_name: "",
+      campus: "Ambegaon",
+      mess: "Sinhgad Rohini Mess",
+      date_of_happening: new Date(),
+      meal_time: "LUNCH",
+      complaint_category: "FOOD_QUALITY",
+      is_clean: "YES",
+      is_pest_controlled: "NO",
+      food_handler_protocols: "Yes",
+      complaint_desc: "",
+      suggestion_improvement: "",
     },
   });
+
+
+  const getComplaintData = async () => {
+
+    const tkn = localStorage.getItem("access")
+    const data: DetailMessInfo | null = await getComplaint(tkn!, complaintId);
+
+    
+    if (data === null) {
+      return;
+    }
+
+    form.setValue("email",data.email)
+    form.setValue("student_name",data.student_name)
+    form.setValue("student_phno",data.student_phno)
+    form.setValue("college_name",data.college_name)
+    form.setValue("campus",data.campus)
+    form.setValue("mess",data.mess)
+    form.setValue("date_of_happening",new Date(data.date_of_happening))
+    form.setValue("meal_time",data.meal_time)
+    form.setValue("complaint_category",data.complaint_category)
+    form.setValue("is_clean",data.is_clean ? "true" : "false")
+    form.setValue("is_pest_controlled",data.is_pest_controlled ? "true" : "false")
+    form.setValue("food_handler_protocols",data.food_handler_protocols ? "true" : "false")
+    form.setValue("complaint_desc",data.complaint_desc)
+    form.setValue("suggestion_improvement",data.suggestion_improvement)
+
+  }
+
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Open</Button>
+        <Button variant="outline" onClick={getComplaintData}>Open</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[800px] xs:max-h-[900px]">
         <div className="w-full grid gap-6 bg-white p-10 rounded-lg shadow-lg">
@@ -77,7 +109,7 @@ const Component: React.FC<ComponentInterface> = ({ data }) => {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input disabled {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -91,7 +123,7 @@ const Component: React.FC<ComponentInterface> = ({ data }) => {
                     <FormItem>
                       <FormLabel>Name of Student</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter your name" {...field} />
+                        <Input disabled placeholder="Enter your name" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -106,6 +138,7 @@ const Component: React.FC<ComponentInterface> = ({ data }) => {
                       <FormLabel>Phone Number</FormLabel>
                       <FormControl>
                         <Input
+                          disabled
                           placeholder="Enter your phone number"
                           {...field}
                         />
@@ -122,7 +155,7 @@ const Component: React.FC<ComponentInterface> = ({ data }) => {
                     <FormItem>
                       <FormLabel>College Name and Class</FormLabel>
                       <FormControl>
-                        <Input placeholder="NBN Sinhgad" {...field} />
+                        <Input disabled placeholder="NBN Sinhgad" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -136,7 +169,7 @@ const Component: React.FC<ComponentInterface> = ({ data }) => {
                     <FormItem>
                       <FormLabel>Select Campus</FormLabel>
                       <FormControl>
-                        <Select {...field} onValueChange={field.onChange}>
+                        <Select disabled {...field} onValueChange={field.onChange}>
                           <SelectTrigger
                             id="campus-dropdown"
                             className="w-full"
@@ -165,7 +198,7 @@ const Component: React.FC<ComponentInterface> = ({ data }) => {
                     <FormItem>
                       <FormLabel>Select Mess</FormLabel>
                       <FormControl>
-                        <Select {...field} onValueChange={field.onChange}>
+                        <Select disabled {...field} onValueChange={field.onChange}>
                           <SelectTrigger id="mess-dropdown" className="w-full">
                             <SelectValue placeholder="Select an option" />
                           </SelectTrigger>
@@ -204,6 +237,7 @@ const Component: React.FC<ComponentInterface> = ({ data }) => {
                         <Popover>
                           <PopoverTrigger asChild>
                             <Button
+                              disabled
                               type="button"
                               variant={"outline"}
                               className={cn(
@@ -223,14 +257,6 @@ const Component: React.FC<ComponentInterface> = ({ data }) => {
                             <Calendar
                               mode="single"
                               selected={date}
-                              onSelect={(selectedDate) => {
-                                setDate(selectedDate);
-                                form.setValue(
-                                  "date_of_happening",
-                                  selectedDate!
-                                );
-                                field.onChange(selectedDate);
-                              }}
                               initialFocus
                             />
                           </PopoverContent>
@@ -248,7 +274,7 @@ const Component: React.FC<ComponentInterface> = ({ data }) => {
                     <FormItem>
                       <FormLabel>Meal Time</FormLabel>
                       <FormControl>
-                        <Select {...field} onValueChange={field.onChange}>
+                        <Select disabled {...field} onValueChange={field.onChange}>
                           <SelectTrigger
                             id="meal-time-dropdown"
                             className="w-full"
@@ -278,7 +304,7 @@ const Component: React.FC<ComponentInterface> = ({ data }) => {
                     <FormItem>
                       <FormLabel>Category of Complaints</FormLabel>
                       <FormControl>
-                        <Select {...field} onValueChange={field.onChange}>
+                        <Select disabled {...field} onValueChange={field.onChange}>
                           <SelectTrigger
                             id="category-dropdown"
                             className="w-full"
@@ -309,7 +335,7 @@ const Component: React.FC<ComponentInterface> = ({ data }) => {
                     <FormItem>
                       <FormLabel>Hygiene Environment in Dining Hall </FormLabel>
                       <FormControl>
-                        <Select {...field} onValueChange={field.onChange}>
+                        <Select disabled {...field} onValueChange={field.onChange}>
                           <SelectTrigger
                             id="isclean-dropdown"
                             className="w-full"
@@ -335,7 +361,7 @@ const Component: React.FC<ComponentInterface> = ({ data }) => {
                     <FormItem>
                       <FormLabel>Pest Control Done in Dining Hall</FormLabel>
                       <FormControl>
-                        <Select {...field} onValueChange={field.onChange}>
+                        <Select disabled {...field} onValueChange={field.onChange}>
                           <SelectTrigger
                             id="is-pest-dropdown"
                             className="w-full"
@@ -361,7 +387,7 @@ const Component: React.FC<ComponentInterface> = ({ data }) => {
                     <FormItem>
                       <FormLabel>Follow Necessary Protocols</FormLabel>
                       <FormControl>
-                        <Select {...field} onValueChange={field.onChange}>
+                        <Select disabled {...field} onValueChange={field.onChange}>
                           <SelectTrigger
                             id="food-handler-dropdown"
                             className="w-full"
@@ -388,6 +414,7 @@ const Component: React.FC<ComponentInterface> = ({ data }) => {
                       <FormLabel>Food Related Complaints</FormLabel>
                       <FormControl>
                         <Input
+                          disabled
                           placeholder="Food complaints if any"
                           {...field}
                         />
@@ -404,6 +431,7 @@ const Component: React.FC<ComponentInterface> = ({ data }) => {
                       <FormLabel>Suggestion If Any</FormLabel>
                       <FormControl>
                         <Input
+                          disabled
                           placeholder=" Any suggestion for improvements"
                           {...field}
                         />
