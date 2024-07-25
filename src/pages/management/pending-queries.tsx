@@ -11,7 +11,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, ChevronDown } from "lucide-react";
 import { userDetailsAtom } from "../../atoms/autAtom.ts";
 
 import { Button } from "../../components/ui/button";
@@ -31,7 +31,7 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useAtom } from "jotai";
 import { loginAtom } from "../../atoms/autAtom";
 import { useNavigate } from "react-router-dom";
@@ -96,12 +96,12 @@ export const columns: ColumnDef<MessInfo>[] = [
   {
     accessorKey: "See Issue",
     header: () => <div className="text-justify">See Issue</div>,
-    cell: ({ row }) => <Component data={data} />,
+    cell: () => <Component data={data} />,
   },
   {
     accessorKey: "Resolve",
     header: () => <div className="text-justify">Resolve</div>,
-    cell: ({ row }) => <ResolveModal />,
+    cell: () => <ResolveModal />,
   },
 ];
 
@@ -158,12 +158,12 @@ const managerColumns: ColumnDef<MessInfo>[] = [
   {
     accessorKey: "See Issue",
     header: () => <div className="text-justify">See Issue</div>,
-    cell: ({ row }) => <Component data={data} />,
+    cell: () => <Component data={data} />,
   },
   {
     accessorKey: "Resolve",
     header: () => <div className="text-justify">Resolve</div>,
-    cell: ({ row }) => <ResolveModal />,
+    cell: () => <ResolveModal />,
   },
 ];
 
@@ -220,17 +220,17 @@ const supervisorColumns: ColumnDef<MessInfo>[] = [
   {
     accessorKey: "See Issue",
     header: () => <div className="text-justify">See Issue</div>,
-    cell: ({ row }) => <Component data={data} />,
+    cell: () => <Component data={data} />,
   },
   {
     accessorKey: "Manager Resolvements",
     header: () => <div className="text-justify">Manager Resolvements</div>,
-    cell: ({ row }) => <ManagerResolverModal />,
+    cell: () => <ManagerResolverModal />,
   },
   {
     accessorKey: "Resolve",
     header: () => <div className="text-justify">Resolve</div>,
-    cell: ({ row }) => <Button className="bg-[#6D52C1]">Resolve</Button>,
+    cell: () => <Button className="bg-[#6D52C1]">Resolve</Button>,
   },
 ];
 

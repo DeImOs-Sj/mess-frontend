@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Dialog,
   DialogTrigger,
@@ -16,7 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
-import { Label } from "./ui/label";
+
 import Pasta from "../assets/pasta.jpg";
 
 import { useForm } from "react-hook-form";

@@ -51,7 +51,7 @@ function App() {
       "CAMPUS_DIRECTOR",
       "COMMITTEE",
       "MANAGER",
-    ].includes(userDetail?.role)
+    ].includes(userDetail?.role!)
   ) {
     header = <ManagementHeader />;
   } else if (isLoggedIn && userDetail?.role === "STUDENT") {

@@ -1,4 +1,3 @@
-import { resolve } from "path"
 import { Complaint, DashboardData, MessInfo } from "../interfaces"
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL

@@ -49,7 +49,7 @@ export default function CreateManagerScreen() {
   const { toast } = useToast();
   const [userDetail] = useAtom(userDetailsAtom);
   const [isLoggedIn,] = useAtom(loginAtom);
-  const [currentRole, setCurrentRole] = useState("");
+  const [currentRole, setCurrentRole] = useState("SUPERVISOR");
 
   const navigate = useNavigate();
 

@@ -30,8 +30,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createComplaint } from "../apis/complaint";
 import { useToast } from "./ui/use-toast";
-import { useAtom } from "jotai";
-import { loginAtom } from "../atoms/autAtom";
 import { Complaint } from "../interfaces";
 
 const formSchema = z.object({
@@ -55,7 +53,7 @@ export function StudentForm() {
   const [date, setDate] = React.useState<Date | undefined>(undefined);
 
   const { toast } = useToast();
-  const [isLoggedIn, setIsLoggedin] = useAtom(loginAtom);
+  // const [isLoggedIn, setIsLoggedin] = useAtom(loginAtom);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

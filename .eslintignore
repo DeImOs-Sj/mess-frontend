@@ -1,0 +1,4 @@
+# .eslintignore
+
+src/components/ui/*.tsx
+src/pages/management/*.tsx

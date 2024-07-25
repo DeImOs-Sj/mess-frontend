@@ -5,7 +5,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "./ui/dialog";
 import { Button } from "./ui/button";
 import {
@@ -19,8 +18,7 @@ import {
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { Calendar } from "./ui/calendar";
-import { useState } from "react";
-import { Textarea } from "./ui/textarea";
+
 import {
   Select,
   SelectTrigger,
@@ -34,7 +32,11 @@ import { cn } from "../lib/utils";
 import { Input } from "./ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
-export default function Component({ data }) {
+interface ComponentInterface {
+  data: any
+}
+
+const Component: React.FC<ComponentInterface> = ({ data }) => {
   const [date, setDate] = React.useState<Date | undefined>(undefined);
 
   const form = useForm({
@@ -424,3 +426,6 @@ export default function Component({ data }) {
     </Dialog>
   );
 }
+
+
+export default Component;
