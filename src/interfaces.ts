@@ -38,6 +38,7 @@ export type MessInfo = {
     campus: string
     mess: string
     date_of_happening: string
+    complaint_category: string
     is_clean: boolean
     status: number
     meal_time: string

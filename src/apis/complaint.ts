@@ -105,6 +105,7 @@ export async function getComplaints(token: string, status: number): Promise<Mess
         }
         
         const jsn: MessInfo[] = await resp.json();
+        console.log(jsn)
 
 
         return jsn;

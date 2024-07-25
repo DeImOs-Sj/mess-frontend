@@ -149,11 +149,17 @@ const managerColumns: ColumnDef<MessInfo>[] = [
         </Button>
       );
     },
+
     cell: ({ row }) => (
       <div className="lowercase">
         {formatDate(row.getValue("date_of_happening"))}
       </div>
     ),
+  },
+  {
+    accessorKey: "complaint_category",
+    header: () => <div className="text-justify">Category</div>,
+    cell: ({ row }) => <div>{row.getValue("complaint_category")}</div>,
   },
   {
     accessorKey: "See Issue",
@@ -216,6 +222,11 @@ const supervisorColumns: ColumnDef<MessInfo>[] = [
         {formatDate(row.getValue("date_of_happening"))}
       </div>
     ),
+  },
+  {
+    accessorKey: "complaint_category",
+    header: () => <div className="text-justify">Category</div>,
+    cell: ({ row }) => <div>{row.getValue("complaint_category")}</div>,
   },
   {
     accessorKey: "See Issue",
@@ -292,8 +303,6 @@ export default function PendingQueries() {
   const [userDetail] = useAtom(userDetailsAtom);
   const userRole = userDetail ? userDetail.role : null;
 
-  console.log(userRole);
-
   const [data, setData] = React.useState<MessInfo[]>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -314,7 +323,7 @@ export default function PendingQueries() {
   // Determine the columns based on user role
   const columns = React.useMemo(() => {
     if (userRole === "MANAGER") {
-      return [...commonColumns, ...managerColumns];
+      return [...managerColumns];
     } else if (userRole === "SUPERVISOR") {
       return [...supervisorColumns];
     } else if (userRole === "RESIDENT_OFFICER") {
@@ -409,9 +418,9 @@ export default function PendingQueries() {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                       </TableHead>
                     );
                   })}
