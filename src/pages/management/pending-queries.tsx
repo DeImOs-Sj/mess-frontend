@@ -87,7 +87,7 @@ export const columns: ColumnDef<MessInfo>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">
+      <div className="lowercase pl-[28px]">
         {formatDate(row.getValue("date_of_happening"))}
       </div>
     ),
@@ -150,7 +150,7 @@ const managerColumns: ColumnDef<MessInfo>[] = [
     },
 
     cell: ({ row }) => (
-      <div className="lowercase">
+      <div className="lowercase pl-[28px]">
         {formatDate(row.getValue("date_of_happening"))}
       </div>
     ),
@@ -163,7 +163,7 @@ const managerColumns: ColumnDef<MessInfo>[] = [
   {
     accessorKey: "See Issue",
     header: () => <div className="text-justify">See Issue</div>,
-    cell: ({ row }) => <Component complaintId={row.getValue('id')} />,
+    cell: ({ row }) => <Component complaintId={row.getValue("id")} />,
   },
   {
     accessorKey: "Resolve",
@@ -217,7 +217,7 @@ const supervisorColumns: ColumnDef<MessInfo>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">
+      <div className="lowercase pl-[28px]">
         {formatDate(row.getValue("date_of_happening"))}
       </div>
     ),
@@ -230,7 +230,7 @@ const supervisorColumns: ColumnDef<MessInfo>[] = [
   {
     accessorKey: "See Issue",
     header: () => <div className="text-justify">See Issue</div>,
-    cell: ({ row }) => <Component complaintId={row.getValue('id')} />,
+    cell: ({ row }) => <Component complaintId={row.getValue("id")} />,
   },
   {
     accessorKey: "Manager Resolvements",
@@ -291,7 +291,7 @@ const residentOfficerColumns: ColumnDef<MessInfo>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">
+      <div className="lowercase pl-[28px]">
         {formatDate(row.getValue("date_of_happening"))}
       </div>
     ),
@@ -417,9 +417,9 @@ export default function PendingQueries() {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
                       </TableHead>
                     );
                   })}

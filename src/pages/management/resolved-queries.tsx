@@ -10,6 +10,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { formatDate } from "../../lib/utils";
+
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
 import { Button } from "../../components/ui/button";
@@ -41,28 +43,36 @@ const data: MessInfo[] = [
     id: "1",
     mess: "SIT Vadgaon Mess",
     campus: "Ambegaon",
-    type: "Cleanliness",
+    meal_time: "BREAKFAST",
+    date: "23-07-2024",
+    category: "Cleanliness",
     timestamp: "20-03-2024",
   },
   {
     id: "2",
     mess: "SIT Vadgaon Mess",
     campus: "Ambegaon",
-    type: "Cleanliness",
+    meal_time: "BREAKFAST",
+    date: "24-07-2024",
+    category: "Cleanliness",
     timestamp: "20-03-2024",
   },
   {
     id: "3",
     mess: "SIT Vadgaon Mess",
     campus: "Ambegaon",
-    type: "Cleanliness",
+    meal_time: "BREAKFAST",
+    date: "25-07-2024",
+    category: "Cleanliness",
     timestamp: "20-03-2024",
   },
   {
     id: "4",
     mess: "SIT Vadgaon Mess",
     campus: "Ambegaon",
-    type: "Cleanliness",
+    meal_time: "BREAKFAST",
+    date: "26-07-2024",
+    category: "Cleanliness",
     timestamp: "20-03-2024",
   },
 ];
@@ -71,7 +81,9 @@ export type MessInfo = {
   id: string;
   mess: string;
   campus: string;
-  type: string;
+  meal_time: string;
+  date: string;
+  category: string;
   timestamp: string;
 };
 
@@ -104,9 +116,33 @@ export const columns: ColumnDef<MessInfo>[] = [
     ),
   },
   {
-    accessorKey: "type",
-    header: () => <div className="text-justify">Type</div>,
-    cell: ({ row }) => <div className="lowercase">{row.getValue("type")}</div>,
+    accessorKey: "meal_time",
+    header: () => <div className="text-justify">Meal Time</div>,
+    cell: ({ row }) => <div>{row.getValue("meal_time")}</div>,
+  },
+  {
+    accessorKey: "date",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Happened On
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="lowercase pl-[28px]">{row.getValue("date")}</div>
+    ),
+  },
+  {
+    accessorKey: "category",
+    header: () => <div className="text-justify">Category</div>,
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("category")}</div>
+    ),
   },
   {
     accessorKey: "timestamp",
@@ -115,36 +151,13 @@ export const columns: ColumnDef<MessInfo>[] = [
       <div className="lowercase">{row.getValue("timestamp")}</div>
     ),
   },
-  {
-    accessorKey: "Actions",
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Resolve Query
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Delete</DropdownMenuItem>
-            <DropdownMenuItem>Reply</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
+  // {
+  //   accessorKey: "resolved",
+  //   header: () => <div className="text-justify">Resolved</div>,
+  //   cell: ({ row }) => (
+  //     <div className="lowercase">{row.getValue("resolved")}</div>
+  //   ),
+  // },
 ];
 
 export default function PendingQueries() {
