@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -33,10 +34,11 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import React, { useEffect } from "react";
 import { useAtom } from "jotai";
 import { loginAtom } from "../../atoms/autAtom";
 import { useNavigate } from "react-router-dom";
+import { getComplaints } from "../../apis/complaint";
+// import { MessInfo } from "../../interfaces";
 
 const data: MessInfo[] = [
   {
@@ -151,16 +153,12 @@ export const columns: ColumnDef<MessInfo>[] = [
       <div className="lowercase">{row.getValue("timestamp")}</div>
     ),
   },
-  // {
-  //   accessorKey: "resolved",
-  //   header: () => <div className="text-justify">Resolved</div>,
-  //   cell: ({ row }) => (
-  //     <div className="lowercase">{row.getValue("resolved")}</div>
-  //   ),
-  // },
 ];
 
 export default function PendingQueries() {
+  //resolved queries code uncomment when implemented
+
+  // const [queriesSolved, setQueriesSolved] = React.useState<MessInfo[]>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -191,10 +189,23 @@ export default function PendingQueries() {
   const [isLoggedIn] = useAtom(loginAtom);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  //resolved queries code uncomment when implemented
+
+  // const fetchData = async () => {
+  //   const token = localStorage.getItem("access");
+  //   let mess_data = await getComplaints(token!, 1);
+  //   setQueriesSolved(mess_data);
+  //   console.log(mess_data);
+  // };
+
+  React.useEffect(() => {
     if (!isLoggedIn) {
       navigate("/login-student");
     }
+
+    //resolved queries code uncomment when implemented
+
+    // fetchData();
   }, [isLoggedIn]);
 
   return (
