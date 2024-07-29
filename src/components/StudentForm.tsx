@@ -210,13 +210,13 @@ export function StudentForm() {
                       </SelectTrigger>
                       <SelectContent className="w-full h-[300px] overflow-y-scroll">
                         <SelectGroup>
-                          <SelectItem value="Sinhgad Rohini Mess">
+                          <SelectItem value="Sinhgad Annapurna Mess">
                             Sinhgad Annapurna Mess
                           </SelectItem>
-                          <SelectItem value="Sinhgad Rohini Mess">
+                          <SelectItem value="Sinhgad Amrapali Mess">
                             Sinhgad Amrapali Mess
                           </SelectItem>
-                          <SelectItem value="Sinhgad Rohini Mess">
+                          <SelectItem value="Sinhgad Deepali Mess">
                             Sinhgad Deepali Mess
                           </SelectItem>
                           <SelectItem value="Sinhgad Rakesh Mess">

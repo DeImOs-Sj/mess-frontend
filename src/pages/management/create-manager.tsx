@@ -48,7 +48,7 @@ interface RoleBasedAccess {
 export default function CreateManagerScreen() {
   const { toast } = useToast();
   const [userDetail] = useAtom(userDetailsAtom);
-  const [isLoggedIn,] = useAtom(loginAtom);
+  const [isLoggedIn] = useAtom(loginAtom);
   const [currentRole, setCurrentRole] = useState("SUPERVISOR");
 
   const navigate = useNavigate();
@@ -108,9 +108,7 @@ export default function CreateManagerScreen() {
 
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center p-3">
-      <p className="text-[#6b46c1] text-2xl font-bold mb-10">
-        Create Management User
-      </p>
+      <p className="text-[#6b46c1] text-2xl font-bold mb-10">Add/Remove User</p>
       <div className="lg:w-[50%] w-full bg-white p-5 shadow-lg rounded-lg">
         <Form {...form}>
           <form className="space-y-5">
