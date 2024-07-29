@@ -296,6 +296,11 @@ const residentOfficerColumns: ColumnDef<MessInfo>[] = [
       </div>
     ),
   },
+  {
+    accessorKey: "complaint_category",
+    header: () => <div className="text-justify">Category</div>,
+    cell: ({ row }) => <div>{row.getValue("complaint_category")}</div>,
+  },
 ];
 
 export default function PendingQueries() {
