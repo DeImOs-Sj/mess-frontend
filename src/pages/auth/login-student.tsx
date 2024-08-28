@@ -21,10 +21,11 @@ import { loginAtom, userDetailsAtom } from "../../atoms/autAtom.ts";
 import { loginStudent } from "../../apis/auth.ts";
 
 const formSchema = z.object({
-  phoneNo: z
-    .string()
-    .min(10, { message: "Phone number must be of 10 digits." })
-    .max(10, { message: "Phone number must be of 10 digits." }),
+  // phoneNo: z
+  //   .string()
+  //   .min(10, { message: "Phone number must be of 10 digits." })
+  //   .max(10, { message: "Phone number must be of 10 digits." }),
+  email: z.string().email(),
   otp: z.string().min(4).max(4),
 });
 
@@ -40,7 +41,8 @@ export default function LoginStudentPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      phoneNo: "",
+      // phoneNo: "",
+      email: "",
       otp: "0000",
     },
   });
@@ -60,7 +62,7 @@ export default function LoginStudentPage() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
 
-    const reslt = await loginStudent(values.phoneNo);
+    const reslt = await loginStudent(values.email);
 
     if (reslt === true) {
       toast({
@@ -89,19 +91,19 @@ export default function LoginStudentPage() {
           <form className="space-y-8">
             <FormField
               control={form.control}
-              name="phoneNo"
+              name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
+                  <FormLabel>Email ID</FormLabel>
                   <FormControl>
                     <Input
-                      type="number"
-                      placeholder="7463827465"
+                      type="email"
+                      placeholder="ramesh@sinhgad.edu.in"
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    Enter Mess registerd Phone number
+                    Enter Mess registerd email id
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

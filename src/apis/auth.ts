@@ -43,7 +43,7 @@ export async function loginOther(email: string, password: string): Promise<boole
 
 
 
-export async function loginStudent(phoneNo: string): Promise<boolean> {
+export async function loginStudent(email: string): Promise<boolean> {
 
     try {
 
@@ -55,8 +55,8 @@ export async function loginStudent(phoneNo: string): Promise<boolean> {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    "email": "",
-                    "phoneNo": phoneNo,
+                    "email": email,
+                    // "phoneNo": "",
                     "role": "STUDENT",
                     "password": "password1"
                   }),
