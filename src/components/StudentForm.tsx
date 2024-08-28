@@ -111,10 +111,10 @@ export function StudentForm() {
   }
 
   return (
-    <div className="w-full grid gap-6 bg-white p-10 rounded-lg shadow-lg">
+    <div className="w-full max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 bg-white rounded-lg shadow-lg">
       <Form {...form}>
         <form>
-          <fieldset className="grid grid-cols-2 gap-4">
+          <fieldset className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
             <FormField
               control={form.control}
               name="email"
@@ -197,6 +197,7 @@ export function StudentForm() {
                 </FormItem>
               )}
             />
+
             <Controller
               control={form.control}
               name="mess"
@@ -208,7 +209,7 @@ export function StudentForm() {
                       <SelectTrigger id="mess-dropdown" className="w-full">
                         <SelectValue placeholder="Select an option" />
                       </SelectTrigger>
-                      <SelectContent className="w-full h-[300px] overflow-y-scroll">
+                      <SelectContent className="w-full h-48 md:h-64 overflow-y-scroll">
                         <SelectGroup>
                           <SelectItem value="Sinhgad Annapurna Mess">
                             Sinhgad Annapurna Mess
@@ -244,17 +245,14 @@ export function StudentForm() {
               control={form.control}
               name="date_of_happening"
               render={({ field }) => (
-                <FormItem className="flex">
+                <FormItem className="flex flex-col">
                   <FormControl>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
                           type="button"
                           variant={"outline"}
-                          className={cn(
-                            "w-full justify-start text-left font-normal mt-[2rem]",
-                            !date && "text-muted-foreground"
-                          )}
+                          className="w-full text-left font-normal mt-4"
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
                           {field.value ? (
@@ -341,7 +339,7 @@ export function StudentForm() {
               name="is_clean"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Hygiene Environment in Dining Hall </FormLabel>
+                  <FormLabel>Hygiene Environment in Dining Hall</FormLabel>
                   <FormControl>
                     <Select {...field} onValueChange={field.onChange}>
                       <SelectTrigger id="isclean-dropdown" className="w-full">
@@ -359,6 +357,7 @@ export function StudentForm() {
                 </FormItem>
               )}
             />
+
             <Controller
               control={form.control}
               name="is_pest_controlled"
@@ -382,6 +381,7 @@ export function StudentForm() {
                 </FormItem>
               )}
             />
+
             <Controller
               control={form.control}
               name="food_handler_protocols"
@@ -408,43 +408,41 @@ export function StudentForm() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="complaint_desc"
-              render={({ field }) => (
-                <FormItem className="col-span-2">
-                  <FormLabel>Food Related Complaints</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Food complaints if any" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="suggestion_improvement"
-              render={({ field }) => (
-                <FormItem className="col-span-2">
-                  <FormLabel>Suggestion If Any</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder=" Any suggestion for improvements"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <Button
-              onClick={form.handleSubmit(onSubmit)}
-              className="col-span-2 mt-6 bg-[#6b46c1] hover:bg-[#5f3eac]"
-            >
+          </fieldset>{" "}
+          <FormField
+            control={form.control}
+            name="complaint_desc"
+            render={({ field }) => (
+              <FormItem className="col-span-2">
+                <FormLabel>Food Related Complaints</FormLabel>
+                <FormControl>
+                  <Input placeholder="Food complaints if any" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="suggestion_improvement"
+            render={({ field }) => (
+              <FormItem className="col-span-2">
+                <FormLabel>Suggestion If Any</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder=" Any suggestion for improvements"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="flex justify-end mt-6">
+            <Button type="submit" onClick={form.handleSubmit(onSubmit)}>
               Submit
             </Button>
-          </fieldset>
+          </div>
         </form>
       </Form>
     </div>
