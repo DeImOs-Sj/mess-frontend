@@ -374,7 +374,7 @@ export default function PendingQueries() {
   return (
     <div className="w-full min-h-screen pt-[100px] flex flex-col justify-evenly items-center">
       <p className="text-[#6b46c1] text-2xl font-bold">Pending Queries</p>
-      <div className="w-[80%] p-10 bg-white m-10 rounded-lg shadow-lg">
+      <div className="w-full max-w-[80%] md:max-w-[70%] lg:max-w-[60%] p-5 sm:p-8 md:p-10 bg-white m-5 sm:m-8 md:m-10 rounded-lg shadow-lg">
         <div className="flex items-center py-4">
           <Input
             placeholder="Filter emails..."

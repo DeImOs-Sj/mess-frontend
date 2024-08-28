@@ -32,7 +32,7 @@ const formSchema = z.object({
 export default function LoginStudentPage() {
   const [optSent, setOTPSent] = useState(false);
   const [isLoggedIn, setIsLoggedin] = useAtom(loginAtom);
-  const [userDetail,] = useAtom(userDetailsAtom);
+  const [userDetail] = useAtom(userDetailsAtom);
 
   const { toast } = useToast();
 
@@ -130,7 +130,7 @@ export default function LoginStudentPage() {
               <Button
                 onClick={form.handleSubmit(onSubmit)}
                 type="submit"
-                className="w-full bg-[#6b46c1] transition-colors hover:bg-[#5f3eac]"
+                className="w-full bg-[#954A98] transition-colors hover:bg-[#954A98]"
               >
                 Login
               </Button>
@@ -138,7 +138,7 @@ export default function LoginStudentPage() {
               <Button
                 onClick={form.handleSubmit(onSubmitPhoneNo)}
                 type="submit"
-                className="w-full bg-[#6b46c1] transition-colors hover:bg-[#5f3eac]"
+                className="w-full bg-[#954A98] transition-colors hover:bg-[#954A98]"
               >
                 Generate OPT
               </Button>
